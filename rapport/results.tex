@@ -1,3 +1,19 @@
 \subsection{Evaluation method}
 \subsection{CREMI}
 \subsection{ISBI 2012}
+
+\begin{center}
+	\begin{tabular}{rllllll}\toprule
+		Layer & Kernel & Strides & Features & BN &  Activation & Output shape \\
+		\midrule
+		Input  &  &  & & & & (21, 21, 1)  \\
+		Convolution & (5, 5) & (1, 1) & 8 & Y & ReLU  & (21, 21, 8)  \\
+		Convolution & (5, 5) & (1, 1) & 32 & Y & ReLU  & (21, 21, 32)  \\
+		Convolution & (5, 5) & (1, 1) & 32 & Y & ReLU  & (21, 21, 32)  \\
+		Convolution & (5, 5) & (1, 1) & 32 & Y & ReLU  & (21, 21, 32)  \\
+		Convolution & (5, 5) & (1, 1) & 8 & Y & ReLU  & (21, 21, 8)  \\
+		Convolution & (5, 5) & (1, 1) & 2 & N & sigmoid  & (21, 21, 2)  \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
