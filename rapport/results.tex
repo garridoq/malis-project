@@ -1,7 +1,13 @@
 \subsection{Evaluation method}
-\subsection{CREMI}
-\subsection{ISBI 2012}
+We evaluated our method with two different datasets : CREMI and ISBI datasets.\\
+Both are composed of Drosophila melanogaster adult brain images.\\
 
+Our 3D image of size X x Y x Z was easier to predict in two-dimension. 
+That's why we considered Z images of size X x Y which were stacked together to get back a 3D image.\\
+A very simple architecture is used for the training.
+It's composed of 6 layers of convolution.
+In~\ref{turaga_maximin_2009}, the original architecture had 4 layers with 5 features. We decided to add more layers and features to obtain better results. 
+Batch normalisations were also added as it didn't exist before.
 \begin{center}
 	\begin{tabular}{rllllll}\toprule
 		Layer & Kernel & Strides & Features & BN &  Activation & Output shape \\
@@ -16,4 +22,44 @@
 		\bottomrule
 	\end{tabular}
 \end{center}
+
+\subsection{CREMI}
+The CREMI (Circuit Reconstruction from Electron Microscopy Images) dataset has three volumes but we decided to use only one (volume A) for our training.\\
+This 3D image has a size of 1250x1250x125. Its corresponding grountruth was also provided in the dataset. 
+The segmentation has labeled connected components with really thin edges.
+For the evaluation, we used the CREMI library that was given with the dataset in Python 2. We, then, adapted it in Python 3.\\
+
+
+
+
+A question arises : how to get an image segmentation from the affinity graph ?
+We used to different methods to answer this problem.
+First of all, a BPT (Binary Partition Tree) and a graph cut could get a good image segmentation. 
+However, even with a strong threshold (around 0.99), isthmus appeared and fusion two different objects together.
+It's a big issue as it affects our scores.
+Secondly, to get rid of isthmus, we did an average affinity.
+Isthmus issues can be solved by improving our post-processing, and it should disappear with a better architecture.
+
+Our results are promising as the different objects are well segmented. 
+Yet, there are a few oversegmentations when regions are darker. 
+Nucleus are not detected as a same object as the cell.
+
+The second volume (volume B) was used as the test set.
+The image was similar to the one in the first volume but the objects are more stretched out.
+Here the objects are well segmented but it was harder on darker regions.
+
+With more details, we can evaluate with numerical results, according to the Rand index and the VOI (variation of information) merge and split. 
+"The Rand index is a measure of the similarity between two data clustering."
+*explain VOI*
+The Rand index should be the highest as possible, closer to 1. 
+The metric VOI should be lower to be better.
+In the original architecture of 4 layers, the Rand index is 0.53 while we got 0.61 with our training set and 0.53 with our test set.
+Our Rand index is higher to the one of the original architecture.
+Our VOI is also lower so better.
+Thus, our results are hopeful knowing our architecture used was really simple. 
+It's still far from the state of the art but it could get even better with a more complex network.
+
+\subsection{ISBI 2012}
+
+
 
