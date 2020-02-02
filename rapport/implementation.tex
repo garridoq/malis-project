@@ -29,15 +29,6 @@ edge. In a first time it was kind of blur but we figured out that 17 correspond
 to the volume taking in account after four convolution layers with a kernel
 size of $5\times5$, reminiscent to the proposed architecture. The patch size is also arbitrary as we are using a FCN that, by definition, don’t care about the input shape.\\
 
-\textcolor{red}{Remove this par ?, redundant with a previous one}\\
-At each iteration, we have to pick one or more pairs of pixels with the purpose
-of computing the loss. Nothing is said about the way to pick the pairs even if
-there is a risk of class imbalance. Indeed, since we are taking patches and due
-to the nature of images, there are many patches with only one segment. The
-hazard is that our NN will learn to predict 1 everywhere. Our solution is to
-select patches with more than one segment and pick the same number of pair
-intra ans inter-segment.\\
-
 \subsection{Computing the maximin edge}
 
 As said earlier, we have to find the maximin edge in order to compute the loss.
