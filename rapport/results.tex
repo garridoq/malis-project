@@ -4,10 +4,15 @@ Both are composed of Drosophila melanogaster adult brain images.\\
 
 A very simple architecture is used for the training.
 It's composed of 6 layers of convolution.\\
-In~\ref{turaga_maximin_2009}, the original architecture had 4 layers with 5 features. We decided to add more layers and features to obtain better results. 
-Batch normalisations were also added as it didn't exist before.\\
+In~\cite{turaga_maximin_2009}, the original architecture had 4 convolutionnal
+layers with 5 features in each. We decided to add more layers and features as
+it gave us better results. 
+Batch normalisation was also added as it has also given us better results.\\
 
-\begin{center}
+the architecture is described in detail in table~\ref{tab:archi}
+
+\begin{table}[!htbp]
+	\centering
 	\begin{tabular}{rllllll}\toprule
 		Layer & Kernel & Strides & Features & BN &  Activation & Output shape \\
 		\midrule
@@ -20,9 +25,10 @@ Batch normalisations were also added as it didn't exist before.\\
 		Convolution & (5, 5) & (1, 1) & 2 & N & sigmoid  & (21, 21, 2)  \\
 		\bottomrule
 	\end{tabular}
-\end{center}
+	\caption{Architecture used in all of our experiments}
+	\label{tab:archi}
+\end{table}
 
-This architecture already gave us really encouraging results. This way, it could only get better if we improve the network.\\
 
 
 \subsection{CREMI}
@@ -31,21 +37,21 @@ This 3D image has a size of 1250x1250x125. Its corresponding grountruth was also
 The segmentation has labeled connected components with really thin edges.
 For the evaluation, we used the CREMI library that was given with the dataset in Python 2. We, then, adapted it in Python 3.\\
 
-\begin{figure*}[t!]
+\begin{figure}[!htbp]
     \centering
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[height=1.2in]{./images/cremi_orig_1.png}
         \caption{Original image}
     \end{subfigure}%
     ~ 
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[height=1.2in]{./images/cremi_gt_1.png}
         \caption{Groundtruth}
     \end{subfigure}
     \caption{CREMI dataset (volume A)}
-\end{figure*}
+\end{figure}
 
 Our 3D image of size X x Y x Z was easier to predict in two-dimension. 
 That's why we considered Z images of size X x Y which were stacked together to get back a 3D image.\\
@@ -68,54 +74,52 @@ It's a big issue as it affects our scores.\\
 Secondly, to get rid of isthmus, we did an average affinity and it could segmented the objects nicely.\\
 Isthmus issues can be solved by improving our post-processing, and it should disappear with a better architecture.\\
 
-\begin{figure*}[t!]
+\begin{figure}[!htbp]
     \centering
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.31\textwidth}
         \centering
         \includegraphics[height=1.2in]{./images/cremi_orig_1.png}
         \caption{Original image}
     \end{subfigure}%
-    ~ 
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.31\textwidth}
         \centering
         \includegraphics[height=1.2in]{./images/cremi_out_1.png}
         \caption{Our segmentation}
-    \end{subfigure}
-    ~ 
-    \begin{subfigure}[t]{0.5\textwidth}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.31\textwidth}
         \centering
         \includegraphics[height=1.2in]{./images/cremi_gt_1.png}
         \caption{Groundtruth}
     \end{subfigure}
     \caption{Results of our training on the CREMI volume A}
-\end{figure*}
+\end{figure}
 
 Our results are promising as the different objects are well segmented. 
 Yet, there are a few oversegmentations when regions are darker.\\ 
 Nucleus are not detected as a same object as the cell.\\
 
 \textcolor{red}{add volume B test}
-\begin{figure*}[t!]
+\begin{figure}[!htbp]
     \centering
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.31\textwidth}
         \centering
         \includegraphics[height=1.2in]{./images/cremi_orig_2.png}
         \caption{Original image}
     \end{subfigure}%
     ~ 
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.31\textwidth}
         \centering
         \includegraphics[height=1.2in]{./images/cremi_out_2.png}
         \caption{Our segmentation}
     \end{subfigure}
     ~ 
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.31\textwidth}
         \centering
         \includegraphics[height=1.2in]{./images/cremi_gt_2.png}
         \caption{Groundtruth}
     \end{subfigure}
     \caption{Results of our test on the CREMI volume B}
-\end{figure*}
+\end{figure}
 
 The second volume (volume B) was used as the test set.
 The image was similar to the one in the first volume but the objects are more stretched out.\\
@@ -127,16 +131,22 @@ With more details, we can evaluate with numerical results, according to the Rand
 The Rand index should be the highest as possible, closer to 1. 
 The metric VOI should be lower to be better.\\
 
-\begin{center}
-	\begin{tabular}{llll}
+\begin{table}[!htbp]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
 		\hline
-		& Rand index & VOI merge (lower is better) & VOI split (lower is better) \\
+		& Rand index & \thead{VOI merge \\(lower is better)} & \thead{VOI split\\(lower is better)} \\
 		\hline
-		MALIS : Training set (original architecture) & 0.53 & 2.08 & 1.32\\
+		\makecell{MALIS : Training set \\(original architecture)} & 0.53 & 2.08 & 1.32\\
+		\hline
 		MALIS : Training set & 0.61 & 1.25 & 1.03\\
+		\hline
 		MALIS : Test set & 0.53 & 1.57 & 1.38\\
+		\hline
 	\end{tabular}
-\end{center}
+	\caption{Results on the CREMI dataset}
+\label{tab:cremi_res}
+\end{table}
 
 In the original architecture of 4 layers, the Rand index is 0.53 while we got 0.61 with our training set and 0.53 with our test set.
 Our Rand index is higher to the one of the original architecture.
@@ -148,75 +158,71 @@ It's still far from the state of the art but it could get even better with a mor
 \subsection{ISBI 2012}
 In a second part, we evaluated our method on the ISBI 2012 Challenge dataset which is a set of 30 sections from a serial section Transmission Electron Microscopy (ssTEM) data set of Drosophila first instar larva ventral nerve cord(VNC).\\
 
-\begin{figure*}[t!]
+\begin{figure}[!htbp]
     \centering
-    \begin{subfigure}[t]{0.5\textwidth}
+	\begin{subfigure}[t]{0.31\textwidth}
         \centering
         \includegraphics[height=1.2in]{./images/isbi_orig_1.png}
         \caption{Original image}
     \end{subfigure}%
-    ~ 
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.31\textwidth}
         \centering
         \includegraphics[height=1.2in]{./images/isbi_gt_1.png}
         \caption{Groundtruth}
     \end{subfigure}
-    \caption{CREMI dataset (volume A)}
-\end{figure*}
+    \caption{ISBI dataset example}
+\end{figure}
 
 The dataset also provides a corresponding groundtruth with labeled connected components, and thick contours.\\
 There is no test set available because we should submit our method to the challenge's leaderboard to get our scores.
 The image has a size of 512x512x30 which is smaller than the CREMI's.\\
-We evaluated using FIJI (Fiji Is Just Imagej) as required in the challenge.\\
+We evaluated using FIJI (Fiji Is Just Imagej) as an evaluation script was given
+for it in the challenge.\\
 
-The exact same architecture than CREMI's was used for the ISBI dataset.\\
+The same architecture that we used for the CREMI dataset was used for the ISBI dataset.\\
 
-\begin{figure*}[t!]
+\begin{figure}[!htbp]
     \centering
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.31\textwidth}
         \centering
         \includegraphics[height=1.2in]{./images/isbi_orig_1.png}
         \caption{Original image}
     \end{subfigure}%
-    ~ 
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.31\textwidth}
         \centering
         \includegraphics[height=1.2in]{./images/isbi_out_1.png}
         \caption{Our segmentation}
     \end{subfigure}
-    ~ 
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.31\textwidth}
         \centering
         \includegraphics[height=1.2in]{./images/isbi_gt_1.png}
         \caption{Groundtruth}
     \end{subfigure}
     \caption{Results of our training on the ISBI dataset}
-\end{figure*}
+\end{figure}
 
 We still get good results even with a simple architecture, because the different objects are well seperated.
 However, there are oversegmentations for darker regions as well.
 
-\begin{figure*}[t!]
+\begin{figure}[!htbp]
     \centering
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.31\textwidth}
         \centering
         \includegraphics[height=1.2in]{./images/isbi_orig_2.png}
         \caption{Original image}
     \end{subfigure}%
-    ~ 
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.31\textwidth}
         \centering
         \includegraphics[height=1.2in]{./images/isbi_out_2.png}
         \caption{Our segmentation}
     \end{subfigure}
-    ~ 
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.31\textwidth}
         \centering
         \includegraphics[height=1.2in]{./images/isbi_gt_2.png}
         \caption{Groundtruth}
     \end{subfigure}
     \caption{Results of our test on the ISBI dataset}
-\end{figure*}
+\end{figure}
 
 For example, in the figure above, there a lot of oversegmentations. This is one of worst image segmentation among the whole dataset.\\
 This image is also the darkest, that's why we made the hypothesis that the oversegmentation issue come from the lack of contrast of the image.\\
@@ -225,16 +231,22 @@ To get numerical results we had to submit our method to the ISBI challenge.\\
 We evaluate through the same metrics as for the CREMI dataset, that is to say the Rand index and the VOI.
 This time the VOI should be higher to be better.\\
 
-\begin{center}
-	\begin{tabular}{lll}
+\begin{table}[!htbp]
+	\centering
+	\begin{tabular}{|c|c|c|}
 		\hline
 		& Rand index & VOI \\
 		\hline
 		MALIS : Training set & 0.76 & 0.89\\
+		\hline
 		MALIS : Test set & 0.73 & 0.87\\
+		\hline
 		Thresholding : Test set & 0.752 & 0.82\\
+		\hline
 	\end{tabular}
-\end{center}
+	\caption{Results on the ISBI dataset}
+	\label{tab:isbi_res}
+\end{table}
 
 The Rand index of our training set was 0.76 and 0.73 for the test test, which is similar but still higher than the thresholding with a Rand index of 0.72.
 Our VOI is also a bit higher than the threshold.\\
