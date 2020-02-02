@@ -109,8 +109,10 @@ appropriate weights so which should resolve the class imbalance issue.
 
 Remember that before, we computed the segmentation by thresholding our affinity
 graph. However this doesn't give optimal results, as for example locally
-another threshold would perform better.
-
+another threshold would perform better.\\
+An issue that was also encountered was small objects that were inside bigger
+ones. These objects lead to an oversegmentation and we would like a way to
+automatically remove those inaccuracies, or at least part of them.
 
 \begin{figure}[!htbp]
 	\centering
@@ -119,5 +121,48 @@ another threshold would perform better.
 	\label{fig:seeded_ws}
 \end{figure}
 
+This is where the framework described in~\cite{funke_large_2019} comes in play.
+As we can see in figure~\ref{fig:seeded_ws}, the first step of the process is
+to average the affinities, as we did before. Afterwards the averaged affinities
+are thresholded at 0.5 (here this threshold is not a parameter). Then a
+distance transform (or a distance map) is computed from the objects to the
+borders. In this distance transform, the furthest points from the borders will
+have the higher values. Then, all the local maxima are taken as seeds for a
+seeded watershed, which gives a a first segmentation.\\
+
+This is still an oversegmentation, but a fragment aggloremeration algorithm is
+then used to fuse regions together. multiple criteria can be used to
+determine which regions to merge together and they are described
+in~\cite{funke_large_2019}.\\
+When all of those steps are done, we obtain the final segmentation.\\
+
+As we can see the process is greatly improved from the first version of MALIS,
+with the loss function, the neural network architecture and the post processign
+used being much more powerful than their previous counterparts.
 
 \subsection{Goals for the second semester}
+
+The main goal for this next semester will be to implement this improved MALIS.
+The mains components to implement are as follow:
+\begin{itemize}
+	\item Implement the U-Net
+	\item Implement the constrained MALIS loss, with it's optimizations
+	\item Implement the seeded watershed and fragment agglomeration
+	\item Try other methods of post processing
+\end{itemize}
+
+Although this is a very important step and a large amount of work, the good
+thing with theses improvements is that we can still use parts of the older
+method while implementing new ones. For example we can try the U-Net with the
+first MALIS loss and no post processing, and the same is true for every new
+component that we will implement.\\
+
+Once we have a working implementation the goal will be to try the method on
+various datasets. The CREMI dataset will provide us a baseline to compare our
+results with those obtained in~\cite{funke_large_2019}. We will also try the
+method on other dataset such as the BSDS500 dataset, which is composed of more
+varied types of images and not just connectomes.\\
+
+These are our main goals for the second semester, but if we are able to finish
+all of this early, there are a lot of interesting experiments where we could
+further test the limits of this method.
