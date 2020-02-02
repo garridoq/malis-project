@@ -8,11 +8,44 @@
 \section{Project’s organisation}
 
 In order to have an overview of the project, we are using the software Trello. With this, we can write all tasks that we need to do, who are responsible of the task and the progression of the project: we can see what is already done and what the other members are currently working on. We communicate with each other using Slack in which we put information and additional contents related to the project. \\
+
 After knowing what we wanted to do, we split the work based on preferences of everyone. Quentin was chosen team leader, he worked on a lot of things in the project and supervised the other team members. Annie worked on the dataset, Josselin on the computation of the loss and the maximum spanning tree and Tiphanie worked on the evaluation and image generation. \\
 
-Every week, we have a meeting with our supervisor in which we discuss about what we did during the week, our issues and solutions if we had some and what we will do afterwards. During each meeting, a different person will lead the discussion. We also write a report every week in which we write what we did in the week to prepare for the meeting. We write all the codes in documented Notebooks that we will clean and put on GitHub.\\
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+ Annie & Josselin & Quentin & Tiphanie \\
+ \hline
+ Find dataset & Computation of MST & Finalize the saliency notebook & Affinity graph thresholding \\ 
+ \hline
+ Exploration of dataset & Computation and optimisation of the path between i and j & Add features in the saliency notebook & Computation of connected components \\ 
+ \hline
+ Analyze what is the intput and output of the neural network and their size & Computation of the maximum path in the MST & Graph generation from output of neural network & Image generation \\ 
+ \hline
+ Understand how to use hdf files & Computation of the loss & Preparation of the dataset & Finishing inference by creating segmentation \\
+ \hline
+ Create architecture of convolutional neural network & Find interesting patches in dataset & Get vertices pairs in same and different object & \\
+ \hline
+ Load ISBI-2012 data & Train and evaluate on ISBI in 2D & Train the network on maximin affinty & \\
+ \hline
+  & & Image reconstruction with inference & \\
+ \hline
+  & & Fiji for evaluation on ISBI & \\
+ \hline
+  & & Load ISBI-2012 data & \\
+ \hline
+ & & Train and evaluate on ISBI in 3D & \\
 
-We managed to implement the first paper and train on different datasets. We have some good results as well but it can be better. We will now implement the U-net in 2D and 3D and try to implement a new loss, which will be computed from the computation of the MST. We will also train on BSDS and apply different post processing.\\
+ \hline
+\end{tabular}
+\end{center}
 
+Every week, we have a meeting with our supervisor in which we discuss about what we did during the week, our issues and solutions if we had some and what we will do afterwards. During each meeting, a different person will lead the discussion. We also write a report every week in which we write what we did in the week to prepare for the meeting. We write all the codes in documented Notebooks that we will clean and put on GitHub. \\
+
+Until now, we managed to implement the first paper and train on different datasets. We have some good results as well but it can be better. We will now implement the U-net in 2D and 3D and try to implement a new loss, which will be computed from the computation of the MST. We will also train on BSDS and apply different post processing. \\
+
+The subject of this project is quite difficult at first because we did not have any basis on image segmentation. Moreover, it was also hard to read and understand the scientific paper because it was written in English and the content was not explained well. To overcome this difficulty, we planned several hours to go through the important things that we needed to retain. After knowing what we must do, the next step was how to implement these ideas. We took some time to know exactly what information we needed and how to use them for the implementation. Once we knew, it was not hard really hard to code with the library Higra, we just needed to find the right functions. Afterwards, we choose to use the PyTorch library, which is easier for us to compute our code. Having no experience with this library, we needed to understand how to use it. There is a tutorial online allowing us to see the basis of PyTorch, which is quite easy to understand. \\
+
+During this project, we received a lot of help from Quentin. This project would have been really hard to do if he was not there, having no great knowledge in image segmentation and machine learning. Thanks to him, we were able to have a better understanding of the papers by explaining to us. It would have taken us a lot longer to understand the papers and how to implement them. \\
 
 \end{document}
