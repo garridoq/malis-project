@@ -9,7 +9,7 @@ layers with 5 features in each. We decided to add more layers and features as
 it gave us better results. 
 Batch normalisation was also added as it has also given us better results.\\
 
-the architecture is described in detail in table~\ref{tab:archi}
+The architecture is described in detail in table~\ref{tab:archi}.
 
 \begin{table}[!htbp]
 	\centering
@@ -53,8 +53,8 @@ For the evaluation, we used the CREMI library that was given with the dataset in
     \caption{CREMI dataset (volume A)}
 \end{figure}
 
-Our 3D image of size X x Y x Z was easier to predict in two-dimension. 
-That's why we considered Z images of size X x Y which were stacked together to get back a 3D image.\\
+Our 3D image of size XxYxZ was easier to predict in two-dimension. 
+That's why we considered Z images of size XxY which were stacked together to get back a 3D image.\\
 
 
 A question arises : how to get an image segmentation from the affinity graph ?\\
@@ -98,7 +98,6 @@ Our results are promising as the different objects are well segmented.
 Yet, there are a few oversegmentations when regions are darker.\\ 
 Nucleus are not detected as a same object as the cell.\\
 
-\textcolor{red}{add volume B test}
 \begin{figure}[!htbp]
     \centering
     \begin{subfigure}[t]{0.31\textwidth}
@@ -125,7 +124,7 @@ The second volume (volume B) was used as the test set.
 The image was similar to the one in the first volume but the objects are more stretched out.\\
 Here the objects are well segmented but it was harder on darker regions.\\
 
-With more details, we can evaluate with numerical results, according to the Rand index and the VOI (variation of information) merge and split. 
+With more details, we can evaluate with numerical results, according to the Rand index and the VOI (variation of information) merge and split.\\ 
 \textcolor{red}{"The Rand index is a measure of the similarity between two data clustering."
 *explain VOI*\\}
 The Rand index should be the highest as possible, closer to 1. 
@@ -156,7 +155,7 @@ Thus, our results are hopeful knowing our architecture used was really simple.\\
 It's still far from the state of the art but it could get even better with a more complex network.\\
 
 \subsection{ISBI 2012}
-In a second part, we evaluated our method on the ISBI 2012 Challenge dataset which is a set of 30 sections from a serial section Transmission Electron Microscopy (ssTEM) data set of Drosophila first instar larva ventral nerve cord(VNC).\\
+In a second part, we evaluated our method on the ISBI 2012 Challenge dataset which is a set of 30 sections from a data set of Drosophila first instar larva brain.\\
 
 \begin{figure}[!htbp]
     \centering
@@ -221,10 +220,11 @@ However, there are oversegmentations for darker regions as well.
         \includegraphics[height=1.2in]{./images/isbi_gt_2.png}
         \caption{Groundtruth}
     \end{subfigure}
-    \caption{Results of our test on the ISBI dataset}
+    \caption{Results of our training on a dark image of the ISBI dataset}
+    \label{fig:isbi}
 \end{figure}
 
-For example, in the figure above, there a lot of oversegmentations. This is one of worst image segmentation among the whole dataset.\\
+For example, in the figure ~\ref{fig:isbi} above, there a lot of oversegmentations. This is one of worst image segmentation among the whole dataset.\\
 This image is also the darkest, that's why we made the hypothesis that the oversegmentation issue come from the lack of contrast of the image.\\
 
 To get numerical results we had to submit our method to the ISBI challenge.\\
