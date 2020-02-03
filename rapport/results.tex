@@ -1,16 +1,16 @@
-\subsection{Evaluation method}
+subsection{Evaluation method}
 We evaluated our method with two different datasets : CREMI and ISBI 2012 datasets.\\
 Both are composed of Drosophila adult brain images.\\
 
 A very simple architecture is used for the training.
-It's composed of 6 layers of convolution.\\
+It is composed of 6 layers of convolution.\\
 In~\cite{turaga_maximin_2009}, the original architecture had 4 convolutionnal
 layers with 5 features in each. We decided to add more layers and features as
 it gave us better results. 
 Batch normalisation was also added as it has also given us better results in
 our experiments.\\
 
-The architecture is described in detail in table~\ref{tab:archi}. As we can
+The architecture is described in details in table~\ref{tab:archi}. As we can
 see, our network takes a 2D image as input whereas both datasets (as we will
 detail afterwards) are 3D images. We decided to use 2D images as it was a
 simplification of the problem and reduced training time drastically, allowing
@@ -41,7 +41,7 @@ images of size $X\times Y$ which were stacked together to get back a 3D image.\\
 The CREMI (Circuit Reconstruction from Electron Microscopy Images) dataset has three volumes but we decided to use only one (volume A) for our training.
 This allows us to use the remaining two for validation and testing.\\
 This 3D image has a size of 1250x1250x125. Its corresponding grountruth was also provided in the dataset. 
-The segmentation constitutes of labeled connected components with really thin
+The segmentation is constituted of labeled connected components with really thin
 edges, we can see an example in figure~\ref{fig:cremi_example}.\\
 Having labeled connected components instead of borders was really helpful for
 our training since we need to know if two pixels belong to the same object,
@@ -87,7 +87,7 @@ figure~\ref{fig:cremi_isthmus} .
 
 \begin{figure}[!htbp]
 	\centering
-	\includegraphics[width=0.7\linewidth]{./images/cremi_isthmus.png}
+	\includegraphics[width=0.6\linewidth]{./images/cremi_isthmus.png}
 	\caption{Illustration of the isthmus issue in our segmentation}%
 	\label{fig:cremi_isthmus}
 \end{figure}
@@ -147,7 +147,7 @@ The image was similar to the one in the first volume but the objects are more
 "stretched out."\\
 As we can see in figure~\ref{fig:cremi_results_b} the objects are well
 segmented but we had the same issues as on our training set.\\
-The segmentation is obviously a bit worse since we dind't train on this image,
+The segmentation is obviously a bit worse since we did not train on this image,
 but they are still encouraging.\\
 
 To get a better understanding of our results, we can evaluate the segmentation, 
@@ -175,13 +175,13 @@ final result.\\
 
 As we can see in table~\ref{tab:cremi_res}, in the original architecture of 4 layers, 
 the Rand index is 0.53 while we got 0.61 with our training set and 0.53 with our test set.
-We achievied better results than the original architecture with our small
+We achieved better results than the original architecture with our small
 improvements, but it will be hard to improve them much more with the current
 method.\\
 
 Thus, our results are hopeful knowing the architecture used was really simple.\\ 
 Our results are still far from the state of the art but it could get even
-better by improving various parts of the methos, as we will detail later.\\
+better by improving various parts of the method, as we will detail later.\\
 
 \subsection{ISBI 2012}
 
@@ -207,10 +207,10 @@ image.\\
 
 The groundtruth provided with the dataset is composed of borders in black and
 cells in white, which we then computed the labeled connected components of as pre
-processing for our trainig.
+processing for our training.
 The test set was given with no groundtruth (as it is a challenge) and we had to
 submit our output to the challenge's leaderboard to get our scores.
-We evaluated using FIJI (Fiji Is Just Imagej) on the training set as an evaluation script was given
+We evaluated using FIJI (Fiji Is Just ImageJ) on the training set as an evaluation script was given
 for it in the challenge.\\
 
 The same architecture that we used for the CREMI dataset was used for the ISBI dataset.\\
@@ -266,8 +266,8 @@ However the results are not always this good. As we can see in
 figure~\ref{fig:isbi_result_fail}, we obtain a poor segmentation, where every
 object is oversegmented and few borders are visible. This was the worst result
 that we got.\\
-This image is also the least constrasted, that's why we can hypotesize that the
-oversegmentation issue comed from the lack of contrast of the image.\\
+This image is also the least constrasted, that's why we can hypothesize that the
+oversegmentation issue comes from the lack of contrast of the image.\\
 
 We evaluate through the same metrics as for the CREMI dataset, that is to say the Rand index and the VOI.
 This time the VOI should be higher to be better.\\
@@ -299,6 +299,6 @@ Our VOI is also a bit higher than the threshold.\\
 Those are better results than CREMI's probably due to the small size of the
 image and the thick borders in the output segmentation.\\ 
 
-The results are also encouraging, as was to be expected since both datasets are
+The results are also encouraging, as iss to be expected since both datasets are
 very similar.
 

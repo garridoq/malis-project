@@ -51,7 +51,7 @@ used.\\
 However, we would like to compute the maximin edge for all pairs of pixels in
 the image. This was not done in the previous paper for time efficiency
 reasons.\\
-However they describ a way to compute the loss with in quasilinear time instead
+However they describe a way to compute the loss with in quasilinear time instead
 of in polynomial time.\\
 
 The main idea is that all maximin edges are in the MST, and there are $n-1$
@@ -66,7 +66,7 @@ able to find for how many pairs of pixels an edge is a maximin edge when
 constructing the MST.\\
 When we add an edge using Kruskal's algorithm, we can look at the "size" of the
 trees it merges and deduce the number of pairs for which the current edge is
-the minimax edge.\\
+the maximin edge.\\
 
 From this, we can define the positive weight of an edge $e$ as the number of pairs
 from the same object/segment merged by adding $e$ to the MST. More formally we
@@ -88,7 +88,7 @@ These formulations allow us to rewrite our loss function as :
 With $A_e$ the affinity of an edge $e$.\\
 
 With this loss function being able to be computed in quasilinear time, this
-will allow us to use the whole image for the loss computation instead of a few
+will allow us to use the whole patch for the loss computation instead of a few
 pairs of pixels, which should improve the results. This loss function is the
 same as before, it still is related to the Rand Index, but it should now
 approximate it much better.\\
@@ -128,9 +128,9 @@ are thresholded at 0.5 (here this threshold is not a parameter). Then a
 distance transform (or a distance map) is computed from the objects to the
 borders. In this distance transform, the furthest points from the borders will
 have the higher values. Then, all the local maxima are taken as seeds for a
-seeded watershed, which gives a a first segmentation.\\
+seeded watershed, which gives us a first segmentation.\\
 
-This is still an oversegmentation, but a fragment aggloremeration algorithm is
+This is still an oversegmentation, but a fragment agglomeration algorithm is
 then used to fuse regions together. multiple criteria can be used to
 determine which regions to merge together and they are described
 in~\cite{funke_large_2019}.\\

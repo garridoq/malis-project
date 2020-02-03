@@ -24,8 +24,8 @@ graph, from~\cite{turaga_learning_2010}}%
 
 Another problem was to understand the input shape. In the paper, they use a
 patch size of $21\times21\times21$. But it is also said that it led to an affinity
-classifier that use a patch with a shape of $17\times17\times17$ to classify an affinity
-edge. In a first time it was kind of blur but we figured out that 17 correspond
+classifier that uses a patch with a shape of $17\times17\times17$ to classify an affinity
+edge. At first it was kind of blur but we figured out that 17 correspond
 to the volume taking in account after four convolution layers with a kernel
 size of $5\times5$, reminiscent to the proposed architecture. The patch size is also arbitrary as we are using a FCN that, by definition, don’t care about the input shape.\\
 
@@ -36,7 +36,7 @@ As we have to do this operation for each training iteration, it is very importan
 guarantee a very low computational cost. Our first approach was to use the
 Breadth First Search algorithm on the Maximum Spanning Tree efficiently created
 with Higra. Sadly, this method was not good because our implementation was
-suffering from the slowness of Python and it's $\mathcal{O}(n)$ complexity for each pair of
+suffering from the slowness of Python and its $\mathcal{O}(n)$ complexity for each pair of
 pixel, which scales badly with the number of pairs chosen. \\
 
 \begin{figure}[!htbp]
@@ -54,8 +54,8 @@ this tree is straightforward, as illustrated in figure~\ref{fig:bpt_method}.
 Edges are added to the tree in order of altitude as our MST is built, as
 described in \cite{najman_playing_2013}.
 This data structure is pretty pertinent as the
-maximin edge between to pixel $i$ and $j$ is the lowest common ancestor of these
-two pixels in the BPT. Higra also allow us to compute the loss with a larger
+maximin edge between two pixels $i$ and $j$ is the lowest common ancestor of these
+two pixels in the BPT. Higra also allows us to compute the loss with a larger
 number of pairs without an explosion of computing time because picking the
 lowest common ancestor is achieved in constant time, with a preprocessing in
 $\mathcal{O}(n\log(n))$.
@@ -75,7 +75,7 @@ Breadth First Search would not work as we are using Higra to compute the MST.
 We found the solution in a code proposed by Giovanni Chierchia and Benjamin
 Perret in~\cite{chierchia_ultrametric_2019} for computing the subdominant
 ultrametric, which is analogous to our problem. Higra has a function that
-allow us to make the correspondence between an edge in the graph and the output
+allows us to make the correspondance between an edge in the graph and the output
 affinity image. Consequently, we are able to localise the maximin edge in the
 output image. Due to the fact that picking an edge does not cause gradient
 history loss we are done.
