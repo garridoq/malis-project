@@ -10,6 +10,7 @@ We will implement both methods and will provide commented Jupyter Notebooks to b
 
 
 Here is a list of present notebooks and what you will find in them:
+
 |Notebook name| Content |
 |---|---|
 | *MALIS_training* | MALIS implementation and training |
