@@ -24,6 +24,8 @@ On this repository you will also find a document called *Report.pdf* which conta
 For this project, we used the following libraries :
  - PyTorch for the deep learning aspect
  - Higra for the parts requiring the use of graphs
+ - [github/jvanvugt/pytorch-unet](https://github.com/jvanvugt/pytorch-unet) for our unet architecture
+ - [github/cremi/cremi_python](https://github.com/cremi/cremi_python) for the evaluation, we adapted the source code to python 3
 
 ## Image results
 
