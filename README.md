@@ -19,6 +19,8 @@ Here is a list of present notebooks and what you will find in them:
 
 On this repository you will also find a document called *Report.pdf* which contains an explanation of the methods, of our implementation, and most importantly of of results.
 
+The slides used for our oral presentation are also available as *presentation.pdf*.
+
 ## Technology used
 
 For this project, we used the following libraries :
