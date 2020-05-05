@@ -12,12 +12,26 @@ had worked and that we were closer to our goal. This helped us stay motivated
 at all times.\\
 
 After knowing what tasks we had to do, we split the work based on preferences of
-everyone. Quentin was chosen team leader, he worked on a lot of things in the
-project and supervised the other team members. Annie worked on the datasets,
-both by exploring them and preparing them.
-Josselin worked on the computation of the loss and the maximum spanning tree.
+everyone. 
+Quentin was chosen team leader, he worked on a lot of things in the project and 
+supervised the other team members. He worked on the computation of the affinity 
+graph from the output of the neural networks. When working on the second paper,
+the improved MALIS, he implemented the new loss and optimized it. He did data
+augmentation, worked on the U-net with Annie and Raphaël and on image
+visualization.
+Annie worked on the datasets, both by exploring them and preparing them. 
+Josselin worked on the computation of the loss and the maximum spanning tree. 
+He then tried to generates a 6 adjacency graph for 3D images with Higra, using 
+C++ and made an extension. After that, he focused on the post processing,
+especially Mumford-Shah method.
 Tiphanie worked on the evaluation and the image generation from the output of
-our neural network.
+our neural network. She then studied the different post-processing we could apply
+to our outputs to get better results and tested them.
+Raphaël, who joined the team for the second semester, first immersed himself in the
+project subject and what we have done so far to have a better overall understanding
+and what needs to be implemented in the second semester. He then worked on the 
+implementation of the U-net and tweaked it with Annie and Quentin. He also created
+the video explaining our subject and what we have done in the project.
 We kept everybody informed at all time of what other people did so that
 everybody could understand every part of the work.\\
 
@@ -25,56 +39,66 @@ Every week, we had a meeting with our supervisor in which we discussed about
 what we did during the week, our issues and solutions if we had some and what
 we will do afterwards. During each meeting, a different person lead the
 discussion. This helped us improve our communication skills and understanding
-of the project as we had to
-present both our work and the works others did, and made sure that everybody
-spoke for the same amount of time overall. We implemented this since
+of the project as we had to present both our work and the works others did, 
+and made sure that everybody spoke for the same amount of time overall. 
+We implemented this since
 discussions were almost one-sided before which was not the best solution.\\
+Since the beginning of the quarantine, we are doing our meetings with Hangouts,
+allowing us to talk to each other in real time. We also use more social networks
+like Discord, allowing us to talk with the team members when working. We can also
+show our screen to the others. \\
 
-We also wrote a report every week in which we wrote what we did in
+We write a report every week in which we note what we did in
 the week to prepare for the meeting and to show results, or more graphical
-elements. We wrote all the codes in documented jupyter notebooks that we will clean and put on GitHub. \\
+elements. It also allows us to keep track of our progress during the project.
+We wrote all the codes in documented Jupyter notebooks that we will clean and put on GitHub. \\
 
 \subsection{Task distribution}
 
-\begin{table}[!hbtp]
-	\centering
-	\begin{tabular}{ |p{0.2\linewidth}|p{0.2\linewidth}|p{0.2\linewidth}|p{0.2\linewidth}| } 
-		\hline
-		Annie & Josselin & Quentin & Tiphanie \\
-		\hline
-		Find dataset & Computation of MST & Finalize the saliency notebook & Affinity graph thresholding \\ 
-		\hline
-		Exploration of dataset & Computation and optimisation of the path between i and j & Add features in the saliency notebook & Computation of connected components \\ 
-		\hline
-		Analyze what is the intput and output of the neural network and their size & Computation of the maximum path in the MST & Graph generation from output of neural network & Image generation \\ 
-		\hline
-		Understand how to use hdf files & Computation of the loss & Preparation of the dataset & Finishing inference by creating segmentation \\
-		\hline
-		Create architecture of convolutional neural network & Find interesting patches in dataset & Get vertices pairs in same and different object & Learn PyTorch\\
-		\hline
-		Load ISBI-2012 data & Train and evaluate on ISBI in 2D & Train the network on maximin affinty & \\
-		\hline
-		Learn PyTorch & Learn PyTorch & Image reconstruction with inference & \\
-		\hline
-		  & & Fiji for evaluation on ISBI & \\
-		  \hline
-		  & & Load ISBI-2012 data & \\
-		  \hline
-		  & & Train and evaluate on ISBI in 2D & \\
-		  \hline
-		  & & Learn PyTorch & \\
-		  \hline
-	\end{tabular}
+\begin{longtable}{ |p{0.15\linewidth}|p{0.15\linewidth}|p{0.15\linewidth}|p{0.15\linewidth}|p{0.15\linewidth}| } 
+	\hline
+	Annie & Josselin & Quentin & Tiphanie & Raphaël \endhead
+	\hline
+	Find dataset & Computation of MST & Finalize the saliency notebook & Affinity graph thresholding & Learn PyTorch \\ 
+	\hline
+	Exploration of dataset & Computation and optimisation of the path between i and j & Add features in the saliency notebook & Computation of connected components &
+	Implement U-net\\ 
+	\hline
+	Analyze what is the intput and output of the neural network and their size & Computation of the maximum path in the MST & Graph generation from output of neural network & Image generation & Tweak U-net hyperparameters\\ 
+	\hline
+	Understand how to use hdf files & Computation of the loss & Preparation of the dataset & Finishing inference by creating segmentation & Creation of the video with Manim\\
+	\hline
+	Create architecture of convolutional neural network & Find interesting patches in dataset & Get vertices pairs in same and different object & Learn PyTorch &\\
+	\hline
+	Load ISBI-2012 data & Train and evaluate on ISBI in 2D & Train the network on maximin affinty & Study post processing & \\
+	\hline
+	Learn PyTorch & Learn PyTorch & Image reconstruction with inference & Test watershed hierarchy functions & \\
+	\hline
+	Implement U-net & Create 6 connected graph and an add it on Higra & Fiji for evaluation on ISBI & Test other methods: region adjacency graph, horizontal cut &\\
+	  \hline
+	Study contrast problems between images & Work on Mumford-Shah post processing & 
+	Load ISBI-2012 data & &\\
+	  \hline
+	Image normalization & & Train and evaluate on ISBI in 2D & &\\
+	  \hline
+	Prepare BSDS dataset & & Learn PyTorch & &\\
+	  \hline
+	Prepare notebooks for training data & & Implement two passes loss (MALIS constrained loss) and optimize it & &\\
+	  \hline
+	Tweak U-net hyperparameters & & Incorporate new loss into the U-net and tweak its hyperparameters & &\\
+	  \hline
+	  & & Pre-processing on CREMI dataset & &\\
+	  \hline
 	\caption{List of the main tasks and their repartition (from our Trello board)}
 	\label{tab:tasks}
-\end{table}
+\end{longtable}
 
 As we can see in table~\ref{tab:tasks} we tried to distribute the work based on
 affinity, and even though the table is unbalanced, everybody put their fair
 share of work into the project.\\
 
 One aspect that is absent from this table is all that we learned.
-As we will detail in the next section, everybody didn't have the same knowledge
+As we will detail in the next section, everybody did not have the same knowledge
 at the beginning of the project and it took everybody a different amount of
 time to learn the necessary information.\\
 
@@ -84,18 +108,21 @@ time to learn the necessary information.\\
 The subject of this project was quite difficult at first because we did not have
 any knowledge on image segmentation or morphology. Moreover, it was also hard to read and
 understand the scientific papers because they were written in English and
-we didn't have the knowledge to understand them clearly at first. To overcome this difficulty, we planned several
+we did not have the knowledge to understand them clearly at first. To overcome this difficulty, we planned several
 hours to go through the important things that we needed to retain, and over
 time we were able to grasp more detail from the papers since our knowledge
 improved throughout the project.\\
 
-After knowing what we had do, the next step was to figure out how to implement
+After knowing what we had to do, the next step was to figure out how to implement
 these ideas.\\
-We took some time to know exactly what we needed to do and how to do it in detail for the implementation.
-Once we knew, we just needed to find the right functions in Higra.\\
-It took us some time to understand how the functions work, as we never used it before.
-Documentation is available online and we spent a lot of time learning how to use the
-functions.\\
+We took some time to know exactly what we needed to do and how to do it in details for the implementation.
+Once we knew, we just needed to find the right functions in Higra.
+It took us some time to understand how the functions work, as we never used them before.
+Documentation is available online and commented notebooks showing examples 
+are also provided, helping us a lot to understand their implementations. 
+We spent quite a lot of time figuring out how to use them at the beginning, 
+but we managed to familiarize ourselves with the library as time passed.\\
+
 Afterwards, we choose to use the PyTorch library for the deep learning
 component of the project, which nobody was familiar with in the group. 
 This lack of experience with it meant that we had to spend more time learning
@@ -104,7 +131,15 @@ be able to use it fairly quickly. Their documentation on Autograd was also
 really helpful when debugging the gradient history loss. Overall the PyTorch
 API was really helpful and allowed us to use PyTorch with a relative ease.\\
 
-During this project, we also received a lot of help from Quentin. This project would
+The one main big difference that we had compared to the first semester was 
+the quarantine. Because of that, we could not meet with each other and work 
+in a proper environment. First because of the internet connection, we also 
+may not have good computers with enough RAM to run some codes on Jupyter Notebook. 
+That aside, we adapted to the situation by continuing to get in touch with each 
+other, by using social networks like I said earlier. We planned sessions 
+during the week to work on the project and kept doing written reports and meetings.\\
+
+During this project, we received a lot of help from Quentin. This project would
 have been really hard to do if he was not there, having no great knowledge in
 image segmentation and machine learning. Thanks to him, we were able to have a
 better understanding of the papers by having him explain them to us. It would have taken us
@@ -114,4 +149,5 @@ not be able to present decent results in the end of the first semester presentat
 Overall, being aware of the work done by others helped us immensely when
 facing issues as we could all think together and challenge each other's
 understanding of different topics. This allowed us to overcome all those
-difficulties more easily and in a more enjoyable way.
+difficulties more easily and in a more enjoyable way. 
+
