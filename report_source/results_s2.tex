@@ -12,7 +12,7 @@ Our results in figure {\color{red} num fig} are very good since our segmentation
 Even the nucleus were taking into account in the segmentation, which is what we're aiming for.\\
 However there are still some missing boundaries which can cause the fusion of two cells.\\
 
-We evaluated our results with several metrics :\\
+We evaluated our results with several metrics :
 \begin{itemize}
   \item the Rand Index
   \item the Variation of Information (VOI) merge and split
@@ -30,7 +30,7 @@ The Variation of Information (VOI) is determined by :\\
 \begin{gather*}
 	VOI(\hat{S},S) = H(\hat{S}|S) + H(S|\hat{S})
 \end{gather*}
-S is our groundtruth segmentation and \hat{S} our predicted segmentation.
+Here $S$ is our groundtruth segmentation and $\hat{S}$ our predicted segmentation.
 The conditional entropy $H(X|Y)$ corresponding to the VOI split, can be interpreted as the amount of over-segmentation.\\
 Likewise, the conditional entropy $H(Y|X)$ corresponding to the VOI merge, is the amount of under-segmentation.\\
 In other word, a perfect over-segmentation will have $H(Y|X) = 0$ and a perfect under-segmentation will have $H(X|Y) = 0$.\\
@@ -38,9 +38,9 @@ The VOI should be lower to be better.\\
 
 The CREMI score corresponds to the geometric mean of the $VOI(\hat{S},S)$ and $1-R(\hat{S},S)$ such as :\\
 \begin{gather*}
-	CREMI = \sqrt{VOI(\hat{S},)\times (1 - R(\hat{S},S))}
+	CREMI = \sqrt{VOI(\hat{S},S)\times (1 - R(\hat{S},S))}
 \end{gather*}
-It was the score to rank our submission to the leaderboard. It also should be lower to be better.\\
+It is the score to rank submissions to the leaderboard. It also should be lower to be better.\\
 
 \begin{table}[!htbp]
 	\centering
@@ -82,18 +82,15 @@ We can see that our U-net MALA has the best results on the training set and hope
 		\hline
 		U-net MALA & \textbf{0.80} & \textbf{0.50} & 0.57 & \textbf{0.46}\\
 		\hline
-	\end{tabular}
-	
-	begin{tabular}{|c|c|c|c|c|}
 		\hline
-		SOTA (in 3D) & 0.89 & 0.115 & 0.339 & 0.221
+		\textit{SOTA (in 3D)} & \textit{0.89} & \textit{0.115} & \textit{0.339}& \textit{0.221}\\
 		\hline
 	\end{tabular}
 	\caption{Results on the test set of CREMI dataset}
 \label{tab:cremi_res_test}
 \end{table}
 
-Just like the training set, our numerical results for the test set are shown in the table ~\ref{tab:cremi_res_test}.\\
+Just like the training set, our numerical results for the test set are shown in the table~\ref{tab:cremi_res_test}.\\
 As we can see, the results with the U-Net MALA are quite similar to what we had before, thanks in part to the data augmentation that allows it to be more robust.\\
 As before, our CREMI score is much lower when compared to the U-Net, which is to be expected, and a good indicator of success.\\
 
