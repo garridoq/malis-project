@@ -62,8 +62,11 @@ optimize this metric in our case.
 
 \subsection{Maximin affinity and the maximin edge}
 
-In order to optmize the Rand Index, we must find a way to compute
-$\delta(\hat{s}_i,\hat{s}_j)$. To do this we will use the concept of maximin
+In order to optmize the Rand Index, we must find a way to relate
+$\delta(\hat{s}_i,\hat{s}_j)$ with the classifier output.
+In the previous section we saw that if we have a misclassified edge that results in the merging or splitting of two segments, the penalty on the Rand Index will be proportional to the product of the size of the two segments. 
+It is therefore important to learn how to accurately predict these edges.
+To do this we will use the concept of maximin
 affinity, as described in~\cite{turaga_maximin_2009}.\\
 Let $\mathcal{P}_{ij}$ the set of all paths between $i$ and $j$ in our image.
 For every path $P\in\mathcal{P}_{ij}$ there is an edge(s) $(k,l)$ with minimal
@@ -179,6 +182,7 @@ prediction of affinity 1 everywhere, far from what we desire).\\
 
 As such when training we need to be careful about what training image we
 select.
+
 
 
 
