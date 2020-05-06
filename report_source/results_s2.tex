@@ -35,5 +35,63 @@ The CREMI score corresponds to the geometric mean of the VOI and $1-R(X,Y)$ such
 $CREMI = \sqrt{VOI(X,Y)\times (1 - R(X,Y))}$
 It was the score to rank our submission to the leaderboard. It also should be lower to be better.\\
 
+\begin{table}[!htbp]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		& Rand index & \thead{VOI merge \\(lower is better)} & \thead{VOI split\\(lower is better)} & \thead{CREMI score\\(lower is better)}\\
+		\hline
+		FCN + MALIS & 0.61 & 1.25 & 1.03 & 0.94\\
+		\hline
+		U-net & 0.58 & 0.91 & \textbf{0.52} & 0.78\\
+		\hline
+		U-net MALA & \textbf{0.83} & \textbf{0.46} & 0.54 & \textbf{0.42}\\
+		\hline
+	\end{tabular}
+	\caption{Results on the training set of CREMI dataset}
+\label{tab:cremi_res_train}
+\end{table}
 
+Our numerical results on the training set can be seen on the table ~\ref{tab:cremi_res_train}.\\
+The FCN + MALIS is what is what we obtained after implementing the first paper.
+The U-Net is just a U-Net with a BCE loss.
+Finally the U-Net MALA is a U-NET with the constrained MALIS loss, both this and the U-Net had the same post processing.\\
+
+For the training set, we get a Rand Index of 0.83 for the U-net MALA which is much higher than the simple U-net with a rand index of 0.58, and also higher than the Rand index of 0.61 we get with the FCN.\\
+The U-net MALA have the lowest VOI merge by far while the FCN have the highest. The VOI split are quite the same for the U-net and U-net MALA.\\
+However it is good to note that there is a tradeoff between the VOI merge and VOI split, and as such comparing the sum is a better indicator.\\
+Our U-net MALA has the best CREMI score of 0.42 compared to the simple U-net and the FCN.\\ 
+We can see that our U-net MALA has the best results on the training set and hope it’s also the case on the test set.\\
+
+\begin{table}[!htbp]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		& Rand index & \thead{VOI merge \\(lower is better)} & \thead{VOI split\\(lower is better)} & \thead{CREMI score\\(lower is better)}\\
+		\hline
+		FCN + MALIS & 0.53 & 1.57 & 1.38 & 1.18\\
+		\hline
+		U-net & 0.52 & 1.07 & \textbf{0.47} & 0.87\\
+		\hline
+		U-net MALA & \textbf{0.80} & \textbf{0.50} & 0.57 & \textbf{0.46}\\
+		\hline
+	\end{tabular}
+	
+	begin{tabular}{|c|c|c|c|c|}
+		\hline
+		SOTA (in 3D) & 0.89 & 0.115 & 0.339 & 0.221
+		\hline
+	\end{tabular}
+	\caption{Results on the test set of CREMI dataset}
+\label{tab:cremi_res_test}
+\end{table}
+
+Just like the training set, our numerical results for the test set are shown in the table ~\ref{tab:cremi_res_test}.\\
+As we can see, the results with the U-Net MALA are quite similar to what we had before, thanks in part to the data augmentation that allows it to be more robust.\\
+As before, our CREMI score is much lower when compared to the U-Net, which is to be expected, and a good indicator of success.\\
+
+However as you can see we are still far from the state of the art, especially for the VOI. One thing that could cause this is the different post processing used.\\ 
+We didn’t have time to implement perfectly the post processing used in the paper and used a simpler one.\\
+However, we can’t really compare our results with the state of the art because it’s in 3D and we’re predicting in 2D which causes us to use less information when predicting.\\
+Yet we still have very good results that demonstrate the benefits of the MALIS loss.\\
 
