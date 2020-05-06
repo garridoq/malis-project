@@ -13,7 +13,8 @@ Here is a list of present notebooks and what you will find in them:
 
 |Notebook name| Content |
 |---|---|
-| *MALIS_training* | MALIS implementation and training |
+| *Training_MALIS* | MALIS implementation and training (original method) |
+|*Training_Unet_MALA* | improved MALIS implementation and training (more recent method) |
 | *Inference* | Using a trained model to obtain a segmentation |
 | *Evaluation* | Evaluation of a model on the CREMI dataset |
 
