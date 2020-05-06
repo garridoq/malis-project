@@ -20,19 +20,26 @@ We evaluated our results with several metrics :\\
 \end{itemize}
 
 The Rand Index, as we talked earlier is defined as :\\
-{\color{red} equation du rand index}
+\begin{gather*}
+	1 - RI(\hat{S},S) = \binom{N}{2}^{-1} \sum_{i<j} \lvert \delta(s_i,s_j) -
+	\delta(\hat{s}_i,\hat{s}_j) \rvert
+\end{gather*}
 It should be closer to 1 to be better\\
 
 The Variation of Information (VOI) is determined by :\\
-$VOI(X,Y) = H(X|Y) + H(Y|X)$
-Y is the groundtruth segmentation.
+\begin{gather*}
+	VOI(\hat{S},S) = H(\hat{S}|S) + H(S|\hat{S})
+\end{gather*}
+S is our groundtruth segmentation and \hat{S} our predicted segmentation.
 The conditional entropy $H(X|Y)$ corresponding to the VOI split, can be interpreted as the amount of over-segmentation.\\
 Likewise, the conditional entropy $H(Y|X)$ corresponding to the VOI merge, is the amount of under-segmentation.\\
 In other word, a perfect over-segmentation will have $H(Y|X) = 0$ and a perfect under-segmentation will have $H(X|Y) = 0$.\\
 The VOI should be lower to be better.\\
 
-The CREMI score corresponds to the geometric mean of the VOI and $1-R(X,Y)$ such as :\\
-$CREMI = \sqrt{VOI(X,Y)\times (1 - R(X,Y))}$
+The CREMI score corresponds to the geometric mean of the $VOI(\hat{S},S)$ and $1-R(\hat{S},S)$ such as :\\
+\begin{gather*}
+	CREMI = \sqrt{VOI(\hat{S},)\times (1 - R(\hat{S},S))}
+\end{gather*}
 It was the score to rank our submission to the leaderboard. It also should be lower to be better.\\
 
 \begin{table}[!htbp]
