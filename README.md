@@ -19,7 +19,9 @@ Here is a list of present notebooks and what you will find in them:
 
 On this repository you will also find a document called *Report.pdf* which contains an explanation of the methods, of our implementation, and most importantly of of results.
 
-The slides used for our oral presentation are also available as *presentation.pdf*.
+The slides used for our oral presentation are also available as *presentation.pdf*. This presentation was recorded and is available [here](https://www.youtube.com/watch?v=lQYUKWz0ujs&t=1878s).
+
+A small video presenting the project in a less technical fashion (in French) is also available [here](https://www.youtube.com/watch?v=kj8nQgDHSfg).
 
 ## Technology used
 
