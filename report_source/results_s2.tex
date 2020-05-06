@@ -1,16 +1,51 @@
-In the second semester, we focused our evaluation on the CREMI dataset. Only one volume was used for the training, which has a size of $1250_times 1250\times 125$.\\
-To get an even bigger dataset for the training, we used data augmentation with elasticTransformation, modification of the brightness and contrast, and also vertical and horizontal flip, like in the paper.\\
-The different components in the images have quite thin edges and strong nuclei which can add difficulty to do our segmentation.\\
-We’ll try to get closer to the groundtruth as much as possible. Unfortunately, we couldn’t create an account to submit our predictions, so we had to split the available images for training and testing.\\ 
-As it was said, we’re not predicting in 3D, so we’ll take 125 images of size $1250\times 1250$.\\ 
+In the second semester, we focused our evaluation on the CREMI dataset. Only
+one volume was used for the training, which has a size of $1250\times 1250\times 125$.\\
+To get an even bigger dataset for the training, we used data augmentation with
+elastic transformations, modification of the brightness and contrast, and also vertical and horizontal flip, like in the paper.\\
+
+One thing that was an issue during the first semester that we wanted to fix was
+the segmentation of the nuclei, we were not able to include it clearly in the
+cell due to the small patch size, but this should be alleviated with the
+unet.\\
+
+An issue for evaluation is that we were not able to create an account tu
+evaluate our model on the test set, so we had to improvise our test set.
+As we have seen, we are not predicting in 3D, so we’ll comsider our dataset as 125 images of size $1250\times 1250$.\\ 
 We’ll split the dataset in 100 images for the training and 25 images for the testing.\\
-We can see an example of our segmentation in figure {\color{red} num fig}.
 
-{\color{red} ajouter images de notre segmentation/original/gt}
+For the post processing, we will just average the edge weights as
+in~\cite{funke_large_2019} but we will only do a watershed to obtain our
+segmentation, as it gave us the best results from what we tried.
 
-Our results in figure {\color{red} num fig} are very good since our segmentation is rather close to the groundtruth and most cells are well separated.
-Even the nucleus were taking into account in the segmentation, which is what we're aiming for.\\
+\begin{figure}[!htbp]
+    \centering
+    \begin{subfigure}[t]{0.31\textwidth}
+        \centering
+        \includegraphics[height=0.9\textwidth]{./images/results/raw_1.png}
+        \caption{Original image}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.31\textwidth}
+        \centering
+        \includegraphics[height=0.9\textwidth]{./images/results/pred_1.png}
+        \caption{Our segmentation}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.31\textwidth}
+        \centering
+        \includegraphics[height=0.9\textwidth]{./images/results/gt_1.png}
+        \caption{Groundtruth}
+    \end{subfigure}
+	\caption{Results on the CREMI dataset volume A. We represented borders
+	around cells instead of labels for more clarity.}
+	\label{fig:cremi_results_s2_a}
+\end{figure}
+
+
+As we can see in figure~\ref{fig:cremi_results_s2_a} our results are very good
+since our segmentation is rather close to the groundtruth and most cells are well separated.
+Even the nucleus were taking into account in the segmentation, which is what we
+were aiming for.\\
 However there are still some missing boundaries which can cause the fusion of two cells.\\
+We provide more examples of results in annex.\\
 
 We evaluated our results with several metrics :
 \begin{itemize}
@@ -31,16 +66,16 @@ The Variation of Information (VOI) is determined by :\\
 	VOI(\hat{S},S) = H(\hat{S}|S) + H(S|\hat{S})
 \end{gather*}
 Here $S$ is our groundtruth segmentation and $\hat{S}$ our predicted segmentation.
-The conditional entropy $H(X|Y)$ corresponding to the VOI split, can be interpreted as the amount of over-segmentation.\\
-Likewise, the conditional entropy $H(Y|X)$ corresponding to the VOI merge, is the amount of under-segmentation.\\
-In other word, a perfect over-segmentation will have $H(Y|X) = 0$ and a perfect under-segmentation will have $H(X|Y) = 0$.\\
+The conditional entropy $H(\hat{S}|S)$ corresponding to the VOI split, can be interpreted as the amount of over-segmentation.\\
+Likewise, the conditional entropy $H(S|\hat{S})$ corresponding to the VOI merge, is the amount of under-segmentation.\\
+In other word, a perfect over-segmentation will have $H(S|\hat{S}) = 0$ and a perfect under-segmentation will have $H(\hat{S}|S) = 0$.\\
 The VOI should be lower to be better.\\
 
 The CREMI score corresponds to the geometric mean of the $VOI(\hat{S},S)$ and $1-R(\hat{S},S)$ such as :\\
 \begin{gather*}
 	CREMI = \sqrt{VOI(\hat{S},S)\times (1 - R(\hat{S},S))}
 \end{gather*}
-It is the score to rank submissions to the leaderboard. It also should be lower to be better.\\
+It is the score used to rank submissions to the leaderboard. It also should be lower to be better.\\
 
 \begin{table}[!htbp]
 	\centering
@@ -55,21 +90,9 @@ It is the score to rank submissions to the leaderboard. It also should be lower 
 		U-net MALA & \textbf{0.83} & \textbf{0.46} & 0.54 & \textbf{0.42}\\
 		\hline
 	\end{tabular}
-	\caption{Results on the training set of CREMI dataset}
+	\caption{Results on the training set of the CREMI dataset}
 \label{tab:cremi_res_train}
 \end{table}
-
-Our numerical results on the training set can be seen on the table ~\ref{tab:cremi_res_train}.\\
-The FCN + MALIS is what is what we obtained after implementing the first paper.
-The U-Net is just a U-Net with a BCE loss.
-Finally the U-Net MALA is a U-NET with the constrained MALIS loss, both this and the U-Net had the same post processing.\\
-
-For the training set, we get a Rand Index of 0.83 for the U-net MALA which is much higher than the simple U-net with a rand index of 0.58, and also higher than the Rand index of 0.61 we get with the FCN.\\
-The U-net MALA have the lowest VOI merge by far while the FCN have the highest. The VOI split are quite the same for the U-net and U-net MALA.\\
-However it is good to note that there is a tradeoff between the VOI merge and VOI split, and as such comparing the sum is a better indicator.\\
-Our U-net MALA has the best CREMI score of 0.42 compared to the simple U-net and the FCN.\\ 
-We can see that our U-net MALA has the best results on the training set and hope it’s also the case on the test set.\\
-
 \begin{table}[!htbp]
 	\centering
 	\begin{tabular}{|c|c|c|c|c|}
@@ -86,16 +109,31 @@ We can see that our U-net MALA has the best results on the training set and hope
 		\textit{SOTA (in 3D)} & \textit{0.89} & \textit{0.115} & \textit{0.339}& \textit{0.221}\\
 		\hline
 	\end{tabular}
-	\caption{Results on the test set of CREMI dataset}
+	\caption{Results on the test set of the CREMI dataset}
 \label{tab:cremi_res_test}
 \end{table}
+
+Our numerical results on the training set can be seen on the table ~\ref{tab:cremi_res_train}.\\
+The FCN + MALIS is what is what we obtained after implementing the first paper.
+The U-net is just a U-Net with a BCE loss.
+Finally the U-net MALA is a U-net with the constrained MALIS loss (the improves
+version of MALIS), both this and the U-Net had the same post processing.\\
+
+For the training set, we get a Rand Index of 0.83 for the U-net MALA which is much higher than the simple U-net with a rand index of 0.58, and also higher than the Rand index of 0.61 we get with the FCN.\\
+The U-net MALA has the lowest VOI merge by far while the FCN have the highest. The VOI split are quite the same for the U-net and U-net MALA.\\
+However it is good to note that there is kind of a tradeoff between the VOI merge and VOI split, and as such comparing the sum is a better indicator.\\
+Our U-net MALA has the best CREMI score of 0.42 compared to the simple U-net and the FCN.\\ 
+We can see that our U-net MALA has the best results on the training set, and we
+will see if it generalizes well on our test set.\\
 
 Just like the training set, our numerical results for the test set are shown in the table~\ref{tab:cremi_res_test}.\\
 As we can see, the results with the U-Net MALA are quite similar to what we had before, thanks in part to the data augmentation that allows it to be more robust.\\
 As before, our CREMI score is much lower when compared to the U-Net, which is to be expected, and a good indicator of success.\\
 
 However as you can see we are still far from the state of the art, especially for the VOI. One thing that could cause this is the different post processing used.\\ 
-We didn’t have time to implement perfectly the post processing used in the paper and used a simpler one.\\
+Indeed we did not have the time to implement the same post processign that was
+used in~\cite{funke_large_2019}, and our implementation was painfully slow, so
+we didn't use it.\\
 However, we can’t really compare our results with the state of the art because it’s in 3D and we’re predicting in 2D which causes us to use less information when predicting.\\
-Yet we still have very good results that demonstrate the benefits of the MALIS loss.\\
-
+Yet the results we obtained, although not state of the art, still demonstrates
+well that the MALIS method can improve results in a significant manner.\\
