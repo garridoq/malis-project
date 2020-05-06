@@ -82,8 +82,36 @@ These formulations allow us to rewrite our loss function as :
 \end{equation*}
 With $A_e$ the affinity of an edge $e$.\\
 
-\textbf{\textcolor{red}{Explain how to compute wn and wp}}
-\\
+The idea to compute $w_n$ and $w_p$ is that every time that an edge $e$ is
+added to our MST, it merges two trees $T_1$ and $T_2$.\\
+We will define $V_{T_i}$ as the set of vertices in the tree $i$.
+If we take two pixels $i \in V_{T_1}$ and $j \in V{T_2}$ we can be sure that $e$ is
+their maximin edge, as it is the edge with lowest affinity in the path from $i$
+to $j$. \\
+As such we can already deduce that there are $|T_1||T_2|$ pairs of
+pixels with $e$ as their maximin edge, but we don't know yet for which of these
+pairs if they should be in the same object or not, which is necessary to
+compute $w_n$ and $w_p$.\\
+
+To do so we need to not only keep track of the areas when computing our MST,
+which is straigthforward, but also keep track of areas per label.\\
+To get the area per label when adding an edge, we can simply add together the
+areas per label from both trees that are merged by this edge.\\
+
+By defining $V_{T_i}^j$ as the set of vertices in tree $T_i$ with label $j$, we
+can compute $w_n$ and $w_p$ as follows: 
+
+\[
+	w_p(e) = \sum_{i\in{1\ldots k}} \lvert V_{T_1}^i \rvert \lvert V_{T_2}^i \rvert
+\]
+\[
+	w_n(e) = \sum_{i\neq j \in{1\ldots k}} \lvert V_{T_1}^i \rvert \lvert
+	V_{T_2}^j \rvert = \lvert V_{T_1} \rvert \lvert V_{T_2} \rvert - w_p(e)
+\]
+
+Since this is computable in $\mathcal{O}(k)$ and we need to to this step $n$
+times, the added complexity is only in $\mathcal{O}(kn)$, making the total
+computation of the loss in $\mathcal{O}(n\text{log}(n) + kn)$.\\
 
 With this loss function being able to be computed in quasilinear time, this
 will allow us to use the whole patch for the loss computation instead of a few
@@ -92,6 +120,63 @@ same as before, it still is related to the Rand Index, but it should now
 approximate it much better.\\
 
 \subsection{Two pass computation of the loss}
+
+An issue with the aforementioned loss is that all edges have both a positive
+weight, where we will compare them to the value 1 and a negative weight where
+we will compare them to 0.\\
+
+However an edge as an optimal value of either 1 or 0, not both, so how can we
+only take only into account the right value ?
+
+\begin{figure}[!htpb]
+	\centering
+	\includegraphics[width=1\linewidth]{./images/two_pass.png}
+	\caption{Illustration of the constrained MALIS loss, blue edges represent a
+	low affinity and red edges a high affinity; from~\cite{funke_large_2019}}%
+	\label{fig:two-pass}
+\end{figure}
+
+As we can see in figure~\ref{fig:two-pass}, we will compute the loss in two
+passes.
+In the positive pass, (b), affinities of edges between ground-truth regions are
+set to zero (blue), in the negative pass (c), affinities within ground-truth
+regions are set to one (red). In either case, a maximal spanning tree (shown as
+shadow) is constructed to identify maximin edges. Note that, in this example,
+edge A is not a maximin edge in the positive pass since the incident voxels are
+already connected by a high affinity path. In contrast, edge B is the maximin
+edge of the bottom left voxel to any other voxel in the same region and thus
+contributes to the loss. Similarly, C is the maximin edge connecting voxels of
+different ground-truth regions and contributes during the negative pass to the
+loss. The resulting gradients of the loss with respect to each edge affinity is
+shown in (d) (positive values in red, negative in blue).\\
+
+To really see the benefit we need to look at how each pass influences the loss
+function. In the positive pass, since we set all negative edges (edges between
+objects) to 0, their contribution to the loss will be 0, so the loss can be
+rewritten as :
+\begin{equation*}
+	L(I,\theta,S) = \sum_{e\in MST(G)} w_p(e)l(1,A_e(I,\theta))
+\end{equation*}
+
+But can those negative edges have a non zero $w_p$ ?\\
+Inside an object, we will have weights having a non zero value, or at worst
+having value 0. So if we take $i,j$ in the same object, there will be a maximin
+path that stays in this object, so no negative edge is the maximin edge for any
+pair of pixel inside the same object, giving all of our negative edges a
+positive weight equal to zero.\\
+As such during the positive pass we only take into account the positive edges
+(edges inside the same object) and their positive weight, which is exactly what
+we wanted.\\
+
+We will do similarly during the negative pass, where we will only take into
+account the negative weight of negative edges.\\
+
+Using these two passes we are able to only account for the useful terms inside
+this loss, and overall achieve a more accurate loss than before.\\
+The only issue with the two passes is the computation time. Although it doesn't
+change the complexity, doing two passes doubles the time required to compute
+the loss. However this is still far superior than the first formulation of the
+loss, or the version in $\mathcal{O}(n^2)$.
 
 
 \subsection{Seeded watershed as post processing}
