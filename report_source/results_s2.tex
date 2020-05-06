@@ -1,0 +1,39 @@
+In the second semester, we focused our evaluation on the CREMI dataset. Only one volume was used for the training, which has a size of $1250_times 1250\times 125$.\\
+To get an even bigger dataset for the training, we used data augmentation with elasticTransformation, modification of the brightness and contrast, and also vertical and horizontal flip, like in the paper.\\
+The different components in the images have quite thin edges and strong nuclei which can add difficulty to do our segmentation.\\
+We’ll try to get closer to the groundtruth as much as possible. Unfortunately, we couldn’t create an account to submit our predictions, so we had to split the available images for training and testing.\\ 
+As it was said, we’re not predicting in 3D, so we’ll take 125 images of size $1250\times 1250$.\\ 
+We’ll split the dataset in 100 images for the training and 25 images for the testing.\\
+We can see an example of our segmentation in figure {\color{red} num fig}.
+
+{\color{red} ajouter images de notre segmentation/original/gt}
+
+Our results in figure {\color{red} num fig} are very good since our segmentation is rather close to the groundtruth and most cells are well separated.
+Even the nucleus were taking into account in the segmentation, which is what we're aiming for.\\
+However there are still some missing boundaries which can cause the fusion of two cells.\\
+
+We evaluated our results with several metrics :\\
+\begin{itemize}
+  \item the Rand Index
+  \item the Variation of Information (VOI) merge and split
+  \item the CREMI score.
+\end{itemize}
+
+The Rand Index, as we talked earlier is defined as :\\
+{\color{red} equation du rand index}
+It should be closer to 1 to be better\\
+
+The Variation of Information (VOI) is determined by :\\
+$VOI(X,Y) = H(X|Y) + H(Y|X)$
+Y is the groundtruth segmentation.
+The conditional entropy $H(X|Y)$ corresponding to the VOI split, can be interpreted as the amount of over-segmentation.\\
+Likewise, the conditional entropy $H(Y|X)$ corresponding to the VOI merge, is the amount of under-segmentation.\\
+In other word, a perfect over-segmentation will have $H(Y|X) = 0$ and a perfect under-segmentation will have $H(X|Y) = 0$.\\
+The VOI should be lower to be better.\\
+
+The CREMI score corresponds to the geometric mean of the VOI and $1-R(X,Y)$ such as :\\
+$CREMI = \sqrt{VOI(X,Y)\times (1 - R(X,Y))}$
+It was the score to rank our submission to the leaderboard. It also should be lower to be better.\\
+
+
+
