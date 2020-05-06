@@ -205,13 +205,28 @@ have the higher values. Then, all the local maxima are taken as seeds for a
 seeded watershed, which gives us a first segmentation.\\
 
 This is still an oversegmentation, but a fragment agglomeration algorithm is
-then used to fuse regions together. multiple criteria can be used to
-determine which regions to merge together and they are described
-in~\cite{funke_large_2019}.\\
-When all of those steps are done, we obtain the final segmentation.\\
+then used to fuse regions together. 
 
-\textbf{\textcolor{red}{Describe agglomeration}}
-\\
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=0.5\linewidth]{./images/rag.png}
+	\caption{Illustration of the merging process in our region adjacency graph.
+	Vertices represent objects in our segmentation and edges a value
+representing the merge priority}%
+	\label{fig:rag}
+\end{figure}
+
+As we can see in figure~\ref{fig:rag} the first step is to construct a region
+adjacency graph. Using this we can then merge objects based on the edge weight
+between them, if two objects are merged, we will update the weights with
+neighbouring objects. The fact that only a local update is needed speeds up the
+algorithms significantly.\\
+The most important part is designing the function that computes our edge
+weights. In~\cite{funke_large_2019} multiple functions are tested, but the most
+interesting one is based on the predicted affinities.\\
+The weight of an edge between  two object is defined as one minus the maximal affinity
+between both objects, as such lower values will be merged first.\\
+
 
 As we can see the process is greatly improved from the first version of MALIS,
 with the loss function, the neural network architecture and the post processign

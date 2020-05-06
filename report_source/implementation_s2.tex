@@ -1,8 +1,198 @@
 \subsection{Neural network used}
 
+As used in~\cite{funker_large_2019} we will use a U-net, however we must adapt
+it since we will only predict in 2D. Our first attempts at implementing the
+U-net were not successful so we opted to used an already tried and tested
+implementation, since we do not need to reimplement the wheel.\\
+We used the implementation available at
+\hyperlink{https://github.com/jvanvugt/pytorch-unet/}{github.com/jvanvugt/pytorch-unet/}.
 
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=1\linewidth]{./images/archi_unet.png}
+	\caption{Architecture used for our experiments,
+	from~\cite{funke_large_2019} with adjustments to numerical values}%
+	\label{fig:archi_unet}
+\end{figure}
+
+We can see in figure~\ref{fig:archi_unet} the architecture that we used in
+practice.\\
+Here are the meaning of the various arrows :
+\begin{itemize}
+	\item Blue rightward arrows : two convolutionnal layrs, with kernel size
+		$3\times3$, and ReLU activation after each convolution.
+	\item Orange downward arrows : max pooling with size $2\times2$
+	\item Brown upward arrows : bilinear upsampling of factor 2 folowed by a
+		$1\times1$ convolutionnal layer to reduce the number of filters.
+	\item Red rightward arrows : center crop and concatenation.
+\end{itemize}
+We will also note that we used batch normalization as it gave us more
+consistent results in practice.\\
+In~\cite{funke_large_2019} Kronecker matrix product is used for upsampling, we
+opted to use bilinear upsampling as it gave us better results than transposed
+convolutions and is more widely used, such as in~\cite{ronneberger_2015}.\\
+
+The absence of padding in our convolutions is really useful as it allow us to
+compute the loss over a smaller patch, speeding up the training quite
+significatively.
 
 \subsection{Use of a BPT to compute the loss}
+
+Just like before, we used a Binary Partition Tree to help us compute our
+loss.\\
+Before, we used it to find the maximin edge by finding the lowest common
+ancestor of our pixel pair.\\
+
+However now we will use it as with Higra it gives us directly the area of
+every nodes. Since every non-leaf node in the BPT corresponds to the addition
+of an edge in our MST, we can easily obtain our areas needed to compute $w_n$
+and $w_p$ in our loss function.\\
+
+However here the hierarchical nature of the BPT is not really used, as a
+modified Kruskal's algorithm could give us the same results, but here it was
+the best tool for the task for which we had an optimized implementation.
+
+\subsection{Inconsistent predictions along axes}
+\begin{figure}[!htbp]
+    \centering
+    \begin{subfigure}[t]{0.40\textwidth}
+        \centering
+        \includegraphics[height=0.9\textwidth]{./images/x_axis.png}
+        \caption{Affinity along the X axis}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.40\textwidth}
+        \centering
+        \includegraphics[height=0.9\textwidth]{./images/y_axis.png}
+        \caption{Affinity along the Y axis}
+    \end{subfigure}
+	\caption{Example predicted affinities, notice the discrepancies between
+	both.}
+	\label{fig:affinity}
+\end{figure}
+
+As we can see in figure~\ref{fig:affinity} there are some important
+discrepancies between our predictions, which we would not expect.\\
+We can see that the two are almost the complementary of each other, with only
+object borders in common. Ideally we eould want very similar results, are on
+such a scale, the differences along an axis or the other should be small.
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=0.8\linewidth]{./images/discrepancies_graph.png}
+	\caption{Illustration of the discrepancies on a simpler graph. The
+	groundtruth here would be to predit only red edges. In grey is drawn a
+valid maximum spanning tree for both graph.}%
+	\label{fig:discrepancies-graph}
+\end{figure}
+
+As we can see in figure~\ref{fig:discrepancies-graph} the scenario that we have
+is represented by the graph on the right, where one axis has the value that we
+would expect and the other does not except for its border.\\
+Although the graphs are very different, they have the sane MST, and thus the
+same MALIS loss, so both are perfectly valid and the neural network has no
+incetive to choose one over the other. Sadly we would like the graph on the
+right, as it could ease our post processing if the obtained graphs were more
+similar to the truth, but the loss only forces the MSTs to be similar.\\
+
+An explanation for this could be the way the MST is generated. Using Kruskal's
+algorithm when multiple edges have the same value we need to make a choice, in
+our case we pic kthe first edge with such value, but we could pick the last
+one, or a random one for example. This could help to avoid such structures in
+our graph, but this would need testing.\\
+An other idea would be to use another loss that penalizes the general graph and
+not just its MST, by comparing each edge to its groundtruth for example.
+Combining both loss may lead to get the best of both worlds, but it would
+require testing.
+
+\subsection{Post processing}
+
+We tried various different post processing, each with a different degree of
+success, and we will present the most meaningful ones (in our opinion).
+
+\subsubsection{Watershed}
+
+At first we wanted to stay close to the post-processing proposed in the first paper.
+Once we had predicted the two gradients, we merged them into one image by
+attributing to each edge the average of the corresponding edges in the two
+predicted images. Once this image was obtained, we did a simple threshold.\\
+We then applied a watershed to obtain our final segmentation.\\
+
+\begin{figure}[!htbp]
+    \centering
+    \begin{subfigure}[t]{0.31\textwidth}
+        \centering
+        \includegraphics[height=0.9\textwidth]{./images/thresh_1.png}
+		\caption{$\theta = 0.25$}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.31\textwidth}
+        \centering
+        \includegraphics[height=0.9\textwidth]{./images/thresh_2.png}
+        \caption{$\theta = 0.5$}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.31\textwidth}
+        \centering
+        \includegraphics[height=0.9\textwidth]{./images/thresh_3.png}
+        \caption{$\theta = 0.75$}
+    \end{subfigure}
+	\caption{Influence of the threshold parameter $\theta$}
+	\label{fig:threshold}
+\end{figure}
+
+As we can see in figure~\ref{fig:threshold} we had to tweak the threshold
+parameter in order to adjust the segmentation
+level. With a too high $\theta$ value, there is too much data remaining in our
+thresholded image. This could lead to over segmentation. On the contrary, with
+a too low value, we risk seeing some segments merging. It is therefore
+important to choose $\theta$ carefully in order to avoid these two cases which
+drastically lower the Rand Index. In practice between 0.25 and 0.5 gave us very
+similar results, both to the eye and using various metrics.\\
+
+This technique is the one that gave us the best results. In addition to the
+quality of the post-processing, it is also the fastest method: on a 2D image of
+$1250\times1250$ from the CREMI dataset, it takes less than a second to get the result.
+This is made possible because we use the implementation of an algorithm with
+linear complexity from~\cite{cousty_watershed_2009} with Higra.\\
+
+This method can also be couple with an agglomeration scheme afterwards, like
+merging regions by area for example, but this did not give us interesting
+results.
+
+\subsubsection{Mumford-Shah functional}
+
+We had a lot of trouble using this technique which proved to be very complex to
+handle. After several experiments we only obtained segmentations that took the
+cell nucleus into account, as in figure~\ref{fig:mumford-shah}.
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=0.3\linewidth]{./images/mumford_shah.png}
+	\caption{Example of a result using Mumford-Shah for post processing}%
+	\label{fig:mumford-shah}
+\end{figure}
+
+On top of that, the treatment is very long. For a 2D image of $1250\times1250$ from the
+CREMI dataset,  it could take several minutes. Which is not sustainable knowing that
+MALIS is made to work on 3D images.\\
+
+We tried to reduce this computation time time by
+using~\cite{perret_removing_2019}
+as an inspiration, but without success. We would probably need more time to
+better understand this technique and how to use it with Higra.
+
+
+\subsubsection{Agglomeration in the region adjacency graph}
+
+We also tried to implement the same processing that was used
+in~\cite{funke_large_2019} but did not have the time to implement an optimised
+version, as described in the paper.\\
+We had to recompute the whole region adjacency graph at every step, which made
+it very slow, especially when we started from an oversegmentation.\\
+
+As such we chose not to use this method, but are confident that it would
+improve our results, as it is quite a smart idea, that takes full advantage of
+the affinities.
+
+
 
 
 \subsection{An improved way to generate edge weights}
@@ -14,7 +204,7 @@ method, which will describe here.\\
 
 \begin{figure}[!htbp]
 	\centering
-	\includegraphics[width=0.5\linewidth]{./images/graph.pdf}
+	\includegraphics[width=0.4\linewidth]{./images/graph.pdf}
 	\caption{Construction of a 4 connected graph in 2d. Green edges represent x
 	edges and blue edges represent y edges}%
 	\label{fig:graph}
@@ -56,7 +246,7 @@ we will now decsribe.
 
 \begin{figure}[!htbp]
 	\centering
-	\includegraphics[width=0.5\linewidth]{./images/graph-order.pdf}
+	\includegraphics[width=0.4\linewidth]{./images/graph-order.pdf}
 	\caption{Oder of edges obtained using Higras's \textit{edge\_list}
 	function.}%
 	\label{fig:graph_order}
