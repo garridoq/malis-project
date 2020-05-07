@@ -137,3 +137,30 @@ we didn't use it.\\
 However, we can’t really compare our results with the state of the art because it’s in 3D and we’re predicting in 2D which causes us to use less information when predicting.\\
 Yet the results we obtained, although not state of the art, still demonstrates
 well that the MALIS method can improve results in a significant manner.\\
+
+\subsection{Other datasets}
+
+During the first semester we tested our method on the ISBI2012 dataset.\\
+We wanted to do the same here but were not able to properly adapt our code to
+work with large borders, our results were not far from what we desired but our
+current implementation had trouble with those borders and merged a lot of
+object together.\\
+
+We especialyl wanted to evaluate our method on this dataset in order to compare
+against other state of the art methods for connectome segmentation such
+as the mutex watershed~\cite{wolf_mutex_2019}.\\
+
+Although we were not able to get good results on the ISBI 2012 dataset, it
+would have been possible if we had more time, as only our implementation was
+faulty.\\
+
+We also tried the method on a completely different kind of dataset, such as the
+BSDS 500 which is composed of natural images.\\
+We were not able to obtain any satisfactory results but, as with the ISBI 2012
+dataset, we believe that with more time we would have been able to get better
+results, as we prefered to focus on the CREMI dataset for our experiments.\\
+
+There is nothing inherently stopping the method from working on other kind of
+images and there are a lot of experiments possible with this method outside the
+scope of connectome segmentation that could yield interesting results.
+
