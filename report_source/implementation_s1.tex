@@ -26,7 +26,7 @@ Another problem was to understand the input shape. In the paper, they use a
 patch size of $21\times21\times21$. But it is also said that it led to an affinity
 classifier that uses a patch with a shape of $17\times17\times17$ to classify an affinity
 edge. At first it was kind of blur but we figured out that 17 correspond
-to the volume taking in account after four convolution layers with a kernel
+to the volume taken into account after four convolution layers with a kernel
 size of $5\times5$, reminiscent to the proposed architecture. The patch size is also arbitrary as we are using a FCN that, by definition, don’t care about the input shape.\\
 
 \subsection{Computing the maximin edge}
@@ -66,7 +66,7 @@ We had some trouble with the interaction between Higra and Pytorch. In order to
 compute the loss, we have to compute a BPT on a graph build from the NN output
 to find the maximin edge used in the loss computation. As you can see in
 figure~\ref{fig:bpt_method}, the gradient history is lost by turning the
-affinities images in graph using Higra.\\
+affinities images into a graph using Higra.\\
 We were unable to keep tracking the gradient history by working on
 graphs, even after a thorough examination of each step of the process. 
 Therefore it was impossible to train our model. But without Higra the

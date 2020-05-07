@@ -1,8 +1,8 @@
 \subsection{Neural network used}
 
-As used in~\cite{funker_large_2019} we will use a U-net, however we must adapt
+As in~\cite{funke_large_2019} we opted to use a U-net, however we must adapt
 it since we will only predict in 2D. Our first attempts at implementing the
-U-net were not successful so we opted to used an already tried and tested
+U-net were not successful so we opted to use an already tried and tested
 implementation, since we do not need to reimplement the wheel.\\
 We used the implementation available at
 \hyperlink{https://github.com/jvanvugt/pytorch-unet/}{github.com/jvanvugt/pytorch-unet/}.
@@ -19,11 +19,11 @@ We can see in figure~\ref{fig:archi_unet} the architecture that we used in
 practice.\\
 Here are the meaning of the various arrows :
 \begin{itemize}
-	\item Blue rightward arrows : two convolutionnal layrs, with kernel size
+	\item Blue rightward arrows : two convolutional layers, with kernel size
 		$3\times3$, and ReLU activation after each convolution.
 	\item Orange downward arrows : max pooling with size $2\times2$
-	\item Brown upward arrows : bilinear upsampling of factor 2 folowed by a
-		$1\times1$ convolutionnal layer to reduce the number of filters.
+	\item Brown upward arrows : bilinear upsampling of factor 2 followed by a
+		$1\times1$ convolutional layer to reduce the number of filters.
 	\item Red rightward arrows : center crop and concatenation.
 \end{itemize}
 We will also note that we used batch normalization as it gave us more
@@ -32,7 +32,7 @@ In~\cite{funke_large_2019} Kronecker matrix product is used for upsampling, we
 opted to use bilinear upsampling as it gave us better results than transposed
 convolutions and is more widely used, such as in~\cite{ronneberger_2015}.\\
 
-The absence of padding in our convolutions is really useful as it allow us to
+The absence of padding in our convolutions is really useful as it allows us to
 compute the loss over a smaller patch, speeding up the training quite
 significatively.
 
@@ -73,7 +73,7 @@ the best tool for the task for which we had an optimized implementation.
 As we can see in figure~\ref{fig:affinity} there are some important
 discrepancies between our predictions, which we would not expect.\\
 We can see that the two are almost the complementary of each other, with only
-object borders in common. Ideally we eould want very similar results, are on
+object borders in common. Ideally we would want very similar results, are on
 such a scale, the differences along an axis or the other should be small.
 
 \begin{figure}[!htbp]
@@ -88,15 +88,15 @@ valid maximum spanning tree for both graph.}%
 As we can see in figure~\ref{fig:discrepancies-graph} the scenario that we have
 is represented by the graph on the right, where one axis has the value that we
 would expect and the other does not except for its border.\\
-Although the graphs are very different, they have the sane MST, and thus the
+Although the graphs are very different, they have the same MST, and thus the
 same MALIS loss, so both are perfectly valid and the neural network has no
-incetive to choose one over the other. Sadly we would like the graph on the
-right, as it could ease our post processing if the obtained graphs were more
+incentive to choose one over the other. Sadly we would like the graph on the
+left, as it could ease our post processing if the obtained graphs were more
 similar to the truth, but the loss only forces the MSTs to be similar.\\
 
 An explanation for this could be the way the MST is generated. Using Kruskal's
 algorithm when multiple edges have the same value we need to make a choice, in
-our case we pic kthe first edge with such value, but we could pick the last
+our case we pick the first edge with such value, but we could pick the last
 one, or a random one for example. This could help to avoid such structures in
 our graph, but this would need testing.\\
 An other idea would be to use another loss that penalizes the general graph and
@@ -107,7 +107,7 @@ require testing.
 \subsection{Post processing}
 
 We tried various different post processing, each with a different degree of
-success, and we will present the most meaningful ones (in our opinion).
+success, and we will present the ones that we found to be the most meaningful.
 
 \subsubsection{Watershed}
 
@@ -153,7 +153,7 @@ $1250\times1250$ from the CREMI dataset, it takes less than a second to get the 
 This is made possible because we use the implementation of an algorithm with
 linear complexity from~\cite{cousty_watershed_2009} with Higra.\\
 
-This method can also be couple with an agglomeration scheme afterwards, like
+This method can also be coupled with an agglomeration scheme afterwards, like
 merging regions by area for example, but this did not give us interesting
 results.
 
@@ -174,7 +174,7 @@ On top of that, the treatment is very long. For a 2D image of $1250\times1250$ f
 CREMI dataset,  it could take several minutes. Which is not sustainable knowing that
 MALIS is made to work on 3D images.\\
 
-We tried to reduce this computation time time by
+We tried to reduce this computation time by
 using~\cite{perret_removing_2019}
 as an inspiration, but without success. We would probably need more time to
 better understand this technique and how to use it with Higra.
@@ -247,7 +247,7 @@ we will now decsribe.
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=0.4\linewidth]{./images/graph-order.pdf}
-	\caption{Oder of edges obtained using Higras's \textit{edge\_list}
+	\caption{Order of edges obtained using Higras's \textit{edge\_list}
 	function.}%
 	\label{fig:graph_order}
 \end{figure}
@@ -255,7 +255,7 @@ we will now decsribe.
 As we can see in figure~\ref{fig:graph_order} edges are always obtained in the
 same fashion, which will allow us to develop a function that bypasses the call
 to \textit{edge\_list} since they will always be in the same order.\\
-The constraint are thus that we need to respect this order in our function, and
+The constraints are thus that we need to respect this order in our function, and
 we need to be careful about code maintenance and unit tests, as a change of the
 way the edges are obtained would break our method.\\
 To alleviate those risks, the best method is to create tests comparing our
@@ -309,7 +309,7 @@ to ease the design of the NN output.\\
 
 As we can also see, our edge weights are simply a
 kind of entanglement of our x and y edges. This leads us to the following code
-to generate of edge weights which doesn't rely on Higra's function :
+to generate the edge weights which doesn't rely on Higra's function :
 \begin{lstlisting}[language=Python]
 import higra as hg
 import torch
@@ -348,7 +348,7 @@ wanted.
 
 Once we have our edge weights as an array, for any processing that we will have
 to do, we can refer to the edge weights which are guaranteed to contain the
-gradient information. This is easier that going back to the NN output, where we
+gradient information. This is easier than going back to the NN output, where we
 would have to reverse the code used to get our edge weights to find their
 position in the output.\\
 
@@ -356,4 +356,4 @@ This process of going back to our neural network was very costly and caused a
 very important bottleneck in our code, which this solution alleviated
 instantly. We had a backward pass that was taking 100 times as long as our
 forward pass, which should not be the case, we expected it to be 2 or 3 times
-as ong at most.
+as long at most.

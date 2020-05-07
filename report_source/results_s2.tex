@@ -8,9 +8,9 @@ the segmentation of the nuclei, we were not able to include it clearly in the
 cell due to the small patch size, but this should be alleviated with the
 unet.\\
 
-An issue for evaluation is that we were not able to create an account tu
+An issue for evaluation is that we were not able to create an account to
 evaluate our model on the test set, so we had to improvise our test set.
-As we have seen, we are not predicting in 3D, so we’ll comsider our dataset as 125 images of size $1250\times 1250$.\\ 
+As we have seen, we are not predicting in 3D, so we’ll consider our dataset as 125 images of size $1250\times 1250$.\\ 
 We’ll split the dataset in 100 images for the training and 25 images for the testing.\\
 
 For the post processing, we will just average the edge weights as
@@ -116,11 +116,11 @@ It is the score used to rank submissions to the leaderboard. It also should be l
 Our numerical results on the training set can be seen on the table ~\ref{tab:cremi_res_train}.\\
 The FCN + MALIS is what is what we obtained after implementing the first paper.
 The U-net is just a U-Net with a BCE loss.
-Finally the U-net MALA is a U-net with the constrained MALIS loss (the improves
+Finally the U-net MALA is a U-net with the constrained MALIS loss (the improved
 version of MALIS), both this and the U-Net had the same post processing.\\
 
 For the training set, we get a Rand Index of 0.83 for the U-net MALA which is much higher than the simple U-net with a rand index of 0.58, and also higher than the Rand index of 0.61 we get with the FCN.\\
-The U-net MALA has the lowest VOI merge by far while the FCN have the highest. The VOI split are quite the same for the U-net and U-net MALA.\\
+The U-net MALA has the lowest VOI merge by far while the FCN has the highest. The VOI split are quite the same for the U-net and U-net MALA.\\
 However it is good to note that there is kind of a tradeoff between the VOI merge and VOI split, and as such comparing the sum is a better indicator.\\
 Our U-net MALA has the best CREMI score of 0.42 compared to the simple U-net and the FCN.\\ 
 We can see that our U-net MALA has the best results on the training set, and we
@@ -131,7 +131,7 @@ As we can see, the results with the U-Net MALA are quite similar to what we had 
 As before, our CREMI score is much lower when compared to the U-Net, which is to be expected, and a good indicator of success.\\
 
 However as you can see we are still far from the state of the art, especially for the VOI. One thing that could cause this is the different post processing used.\\ 
-Indeed we did not have the time to implement the same post processign that was
+Indeed we did not have the time to implement the same post processing that was
 used in~\cite{funke_large_2019}, and our implementation was painfully slow, so
 we didn't use it.\\
 However, we can’t really compare our results with the state of the art because it’s in 3D and we’re predicting in 2D which causes us to use less information when predicting.\\
