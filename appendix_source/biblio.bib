@@ -1,0 +1,29 @@
+@article{funke_large_2019,
+	title = {Large {Scale} {Image} {Segmentation} with {Structured} {Loss} {Based} {Deep} {Learning} for {Connectome} {Reconstruction}},
+	volume = {41},
+	issn = {1939-3539},
+	doi = {10.1109/TPAMI.2018.2835450},
+	abstract = {We present a method combining affinity prediction with region agglomeration, which improves significantly upon the state of the art of neuron segmentation from electron microscopy (EM) in accuracy and scalability. Our method consists of a 3D U-Net, trained to predict affinities between voxels, followed by iterative region agglomeration. We train using a structured loss based on Malis, encouraging topologically correct segmentations obtained from affinity thresholding. Our extension consists of two parts: First, we present a quasi-linear method to compute the loss gradient, improving over the original quadratic algorithm. Second, we compute the gradient in two separate passes to avoid spurious gradient contributions in early training stages. Our predictions are accurate enough that simple learning-free percentile-based agglomeration outperforms more involved methods used earlier on inferior predictions. We present results on three diverse EM datasets, achieving relative improvements over previous results of 27, 15, and 250 percent. Our findings suggest that a single method can be applied to both nearly isotropic block-face EM data and anisotropic serial sectioned EM data. The runtime of our method scales linearly with the size of the volume and achieves a throughput of 2.6 seconds per megavoxel, qualifying our method for the processing of very large datasets.},
+	number = {7},
+	journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+	author = {Funke, Jan and Tschopp, Fabian and Grisaitis, William and Sheridan, Arlo and Singh, Chandan and Saalfeld, Stephan and Turaga, Srinivas C.},
+	month = jul,
+	year = {2019},
+	keywords = {3D electron microscopy, 3D U-Net architecture, affinity prediction, agglomeration, biological nervous systems, connectome reconstruction, Connectomics, deep learning, electron microscopy, gradient methods, Image reconstruction, image segmentation, Image segmentation, iterative region agglomeration, learning (artificial intelligence), Malis loss function, medical image processing, Microscopy, neural net architecture, neuron segmentation, Neurons, neurophysiology, Prediction algorithms, quasilinear method, segmentation, stereo image processing, structured loss, Three-dimensional displays, Training},
+	pages = {1669--1680},
+	file = {IEEE Xplore Abstract Record:/home/garridoq/Zotero/storage/JR4Z7PK8/8364622.html:text/html;IEEE Xplore Full Text PDF:/home/garridoq/Zotero/storage/TJRXBXA4/Funke et al. - 2019 - Large Scale Image Segmentation with Structured Los.pdf:application/pdf}
+}
+
+@article{turaga_maximin_2009,
+	title = {Maximin affinity learning of image segmentation},
+	url = {http://arxiv.org/abs/0911.5372},
+	abstract = {Images can be segmented by first using a classifier to predict an affinity graph that reflects the degree to which image pixels must be grouped together and then partitioning the graph to yield a segmentation. Machine learning has been applied to the affinity classifier to produce affinity graphs that are good in the sense of minimizing edge misclassification rates. However, this error measure is only indirectly related to the quality of segmentations produced by ultimately partitioning the affinity graph. We present the first machine learning algorithm for training a classifier to produce affinity graphs that are good in the sense of producing segmentations that directly minimize the Rand index, a well known segmentation performance measure. The Rand index measures segmentation performance by quantifying the classification of the connectivity of image pixel pairs after segmentation. By using the simple graph partitioning algorithm of finding the connected components of the thresholded affinity graph, we are able to train an affinity classifier to directly minimize the Rand index of segmentations resulting from the graph partitioning. Our learning algorithm corresponds to the learning of maximin affinities between image pixel pairs, which are predictive of the pixel-pair connectivity.},
+	urldate = {2019-12-09},
+	journal = {arXiv:0911.5372 [cs]},
+	author = {Turaga, Srinivas C. and Briggman, Kevin L. and Helmstaedter, Moritz and Denk, Winfried and Seung, H. Sebastian},
+	month = nov,
+	year = {2009},
+	note = {arXiv: 0911.5372},
+	keywords = {Computer Science - Computer Vision and Pattern Recognition, Computer Science - Machine Learning, Computer Science - Artificial Intelligence, Computer Science - Neural and Evolutionary Computing},
+	file = {arXiv.org Snapshot:/home/garridoq/Zotero/storage/BIZIUJ68/Turaga et al. - 2009 - Maximin affinity learning of image segmentation.html:text/html;arXiv Fulltext PDF:/home/garridoq/Zotero/storage/REXNEP45/Turaga et al. - 2009 - Maximin affinity learning of image segmentation.pdf:application/pdf}
+}

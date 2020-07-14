@@ -1,0 +1,49 @@
+As for the previous report, we focused our evaluation on the Cremi dataset. We didn't have time to implement data augmentation like 2D training.\\
+We have selected a good iteration for the Unet 3D but the number of iterations is well below that of the other networks. Indeed, the training time exploded with the use of volumes and we could only train briefly. The time losses are not due to the calculation of the loss which remains fast but to the data transfers between the GPU, for the neural network and the CPU for the calculation of the loss with Higra.\\
+
+In the following tables "U-net MALA" refers to the network implemented by the previous group and "U-net MALA 3 images" refers to the network taking as input 3 successive frames.
+
+
+\begin{table}[!htbp]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		& Rand index & \thead{VOI merge \\(lower is better)} & \thead{VOI split\\(lower is better)} & \thead{CREMI score\\(lower is better)}\\
+		\hline
+		U-net MALA & 0.83 & 0.46 & 0.54 & 0.42\\
+		\hline
+		U-net MALA padding & \textbf{0.84} & \textbf{0.39} & \textbf{0.48} & \textbf{0.36}\\
+		\hline
+		U-net MALA 3 images & \textbf{0.84} & 0.40 & 0.52 & 0.37\\
+		\hline
+		U-net MALA 3D & 0.80 & 0.69 & 0.47 & 0.48\\
+		\hline
+	\end{tabular}
+	\caption{Results on the training set of the CREMI dataset}
+\label{tab:cremi_res_train}
+\end{table}
+\begin{table}[!htbp]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		& Rand index & \thead{VOI merge \\(lower is better)} & \thead{VOI split\\(lower is better)} & \thead{CREMI score\\(lower is better)}\\
+		\hline
+		U-net MALA & 0.80 & 0.50 & 0.57 & 0.46\\
+		\hline
+		U-net MALA padding & \textbf{0.82} & \textbf{0.43} & \textbf{0.51} & \textbf{0.40}\\
+		\hline
+		U-net MALA 3 images & 0.80 & 0.45 & 0.56 & 0.44\\
+		\hline
+		U-net MALA 3D & 0.75 & 0.53 & 0.77 & 0.56\\
+		\hline
+		\hline
+		\textit{SOTA (in 3D)} & \textit{0.89} & \textit{0.115} & \textit{0.339}& \textit{0.221}\\
+		\hline
+	\end{tabular}
+	\caption{Results on the test set of the CREMI dataset}
+\label{tab:cremi_res_test}
+\end{table}
+
+We can see that the experience with padding is conclusive and provides better results than previously as much on the training set as on the train set. The most interesting improvement is at the VOI level. By calculating the loss on a larger patch we have significantly improved in performance. However, we are still far from the state of the art regarding the VOI split and merge.\\
+
+The results of the 3D U-net are not yet up to par but given the little iteration this is quite encouraging. The differences between the numerical results of the train set and the test set clearly show that the network is not able to generalise well and lacks training. It will be necessary to optimize the code for the transition from GPU to CPU to save time and of course work on the inconveniences which we have discussed in the previous parts.

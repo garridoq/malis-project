@@ -1,3 +1,4 @@
+
 # Maximin Affinity Learning of Image Segmentation (MALIS)
 
 The goal of this project is to implement MALIS as desribed first in:
@@ -15,10 +16,11 @@ Here is a list of present notebooks and what you will find in them:
 |---|---|
 | *Training_MALIS* | MALIS implementation and training (original method) |
 |*Training_Unet_MALA* | improved MALIS implementation and training (more recent method) |
+|*Training_Unet_MALA_3D* | improved MALIS implementation and training using volumes |
 | *Inference* | Using a trained model to obtain a segmentation |
 | *Evaluation* | Evaluation of a model on the CREMI dataset |
 
-On this repository you will also find a document called *Report.pdf* which contains an explanation of the methods, of our implementation, and most importantly of of results.
+On this repository you will also find a document called *Report.pdf* which contains an explanation of the methods, of our implementation, and most importantly of our results.
 
 The slides used for our oral presentation are also available as *presentation.pdf*. This presentation was recorded and is available [here](https://www.youtube.com/watch?v=lQYUKWz0ujs&t=1878s).
 
@@ -57,3 +59,4 @@ This project was done throughout the year with the following team :
 - Raphaël LAPERTOT (only for the second semester)
 
 We were supervised by Laurent NAJMAN, who was of great help to us.
+
